@@ -25,24 +25,12 @@ const styles = {
         fontWeight: 300,
         lineHeight: 0.1,
         position: 'relative',
-        marginBottom: -4,
+        marginBottom: 3,
         display: 'block',
         top: 0,
         textTransform: 'capitalize'
     },
-    indexNumber: {
-        fontWeight: 300,
-        lineHeight: 0.1,
-        fontFamily: 'monospace',
-        letterSpacing: '0.1em',
-        alignSelf: 'center'
-    }
 }
-
-const myformat = new Intl.NumberFormat('en-US', {
-    minimumIntegerDigits: 3,
-    minimumFractionDigits: 0
-});
 
 const changeDashForSpace = (stringToChange : string) => {
     return stringToChange.split("-").join(" ");
@@ -60,17 +48,6 @@ const Naming: React.FC<Props> = ({ pokemon }) => {
     }, []);
 
     return <>
-            <Typography variant={'caption'}
-                        sx={styles.indexNumber}>
-                {pokemon?.id > 1000 ?
-
-                    <>#F{myformat.format(pokemon?.id - 10000)}</>
-
-                    :
-                    <>#{myformat.format(pokemon?.id)}</>
-
-                }
-            </Typography>
             <div style={styles.nameContainer}>
 
                 <Typography variant={'h6'}

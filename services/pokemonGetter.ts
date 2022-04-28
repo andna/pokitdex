@@ -39,7 +39,7 @@ export const getAllPokemonsByApi = async () => {
 
 export const loadPokemonByApi = async (name : string | string[] | undefined) => {
 
-    let results : Pokemon = {};
+    let results : Pokemon | null = null;
 
     const apiPokemonList = `https://pokeapi.co/api/v2/pokemon/${name}`;
     const response = await fetch(apiPokemonList).then(response => {

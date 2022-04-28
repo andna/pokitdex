@@ -1,19 +1,28 @@
 import { useRouter } from 'next/router'
-import {useEffect, useState} from "react";
-import Loader from "../components/atoms/loader";
-import {Pokemon} from "../types/Pokemon";
 import PokemonCard from "../components/organisms/PokemonCard";
-import Head from 'next/head'
-import {loadPokemonByApi} from "../services/pokemonGetter";
+import Loader from "../components/atoms/loader";
+import {useEffect, useState} from "react";
 
 const PokemonPage = () => {
     const router = useRouter()
-    const {
-        query: { pid },
-    } = router
+    const { query: {pid} } = router
+
+    const [loadedPokemon, setLoadedPokemon] = useState<boolean>(false);
+
+    useEffect(()=>{
+        if(!router.isReady) return;
+        setLoadedPokemon(true)
+
+    }, [router.isReady]);
 
     return <>
-        <PokemonCard pokemonName={pid as string}/>
+        {loadedPokemon ?
+            <PokemonCard pokemonName={pid as string}/>
+            :
+            <Loader />
+        }
+
+
     </>
 }
 

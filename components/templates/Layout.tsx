@@ -18,14 +18,14 @@ const theme : Theme = createTheme({
     palette: {
         //type: 'dark',
         primary: {
-            main: colors.blueBright,
+            main: colors.redBright,
         },
         secondary: {
             main: colors.secondary,
         },
         background: {
-            default: colors.blueDark,
-            paper: colors.bluePale,
+            default: colors.redDark,
+            paper: colors.redPale,
         },
         text: {
             primary: colors.white,
@@ -48,6 +48,7 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        maxWidth: '2400px !important'
     },
     footer: {
         textAlign: 'center' as 'center',
@@ -73,7 +74,7 @@ const Layout: React.FC<Props> = ( { children } ) => {
             <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <main>
+        <main style={{maxWidth: 'inherit'}}>
             <ThemeProvider theme={theme}>
                 <CssBaseline />
                 <AppBar>

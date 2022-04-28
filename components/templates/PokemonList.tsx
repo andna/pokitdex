@@ -6,10 +6,21 @@ import PokemonCard from "../../components/organisms/PokemonCard";
 import {useRouter} from "next/router";
 import {getAllPokemonsByApi} from "../../services/pokemonGetter";
 
-const gridProps = {
+const styles = {
+    grid: {
     container:true,
     justifyContent: "center",
     spacing: 2
+    },
+    pagination: {
+        position: 'fixed',
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        background: '#2b1f2c',
+        height: 42,
+        bottom: 0
+    }
 };
 
 export default function PokemonList({  }) {
@@ -38,6 +49,7 @@ export default function PokemonList({  }) {
 
 
     const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        window.scrollTo(0, 0)
         changePage(value);
     };
 
@@ -63,17 +75,20 @@ export default function PokemonList({  }) {
 
             {loading ? <Loader /> :
                 <>
-                    <Grid {...gridProps}>
+                    <Grid {...styles.grid}>
                         {pokemons && pokemons?.slice(pageOffsetIndexShown, pageOffsetIndexShownEnd)
-                            .map((pokemon : Pokemon) => {
-                                return <PokemonCard pokemonName={pokemon.name} key={pokemon.name}/>
+                            .map((pokemon : Pokemon, index: number) => {
+                                return <PokemonCard pokemonName={pokemon.name}
+                                                    isFirstOfPage={index === 0}
+                                                    key={pokemon.name} />
                             })}
                     </Grid>
 
                 </>
             }
-            <Pagination count={pageQuantity}
+            <Pagination sx={styles.pagination} count={pageQuantity}
                         page={pageCurrent}
+                        color="primary"
                         onChange={handlePageChange}/>
 
 

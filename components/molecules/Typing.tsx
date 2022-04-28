@@ -20,8 +20,11 @@ type Props = {
 }
 
 const Typing: React.FC<Props> = ({ typing }) => {
+
+    const typeColors : any = colors.types;
+
     return <Chip
-                sx={{...styles.chip, background: colors.types[typing.type.name] }}
+                sx={{...styles.chip, background: typeColors[typing.type.name] }}
                 label={typing.type.name} />
 }
 
