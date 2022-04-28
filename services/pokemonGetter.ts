@@ -1,42 +1,58 @@
 import list from "../pages/api/list";
 import data from "../pages/api/data";
+import {Pokemon} from "../types/Pokemon";
+
+const localIdPreffix = 'pokemon-';
+const localIdList = `${localIdPreffix}-list`;
 
 export const getAllPokemonsByApi = async () => {
-    const apiPokemonList = `https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0`;
-    const response = await fetch(apiPokemonList).then(response => {
-        if (!response.ok) {
-            throw new Error("HTTP error " + response.status);
-        }
-        return response.json();
-        }).then(json => {
-            return json.results;
-        })
-        .catch(function (e) {
-            console.error(e)
-        });
 
-    return list; //[];
-}
+    const localList = localStorage.getItem(localIdList);
 
-export const loadPokemonByApi = async (name : string) => {
-
-    const localData = localStorage.getItem(`pokemon/${name}`);
-    if (localData) {
-        return localData;
+    if(localList){
+        return JSON.parse(localList);
     } else {
-        const apiPokemonList = `https://pokeapi.co/api/v2/pokemon/${name}`;
-        const response = await fetch(apiPokemonList).then(response => {
+        const apiPokemonList = `https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0`;
+
+        let results : Pokemon[] = [];
+
+        await fetch(apiPokemonList).then(response => {
             if (!response.ok) {
                 throw new Error("HTTP error " + response.status);
             }
             return response.json();
         }).then(json => {
-                localStorage.setItem(`pokemon/${name}`, JSON.stringify(json));
-                return json;
-            })
+            results = json.results;
+        })
             .catch(function (e) {
                 console.error(e)
-                return data;
+                results = [];
             });
+
+        localStorage.setItem(localIdList, JSON.stringify(results));
+        return results;
     }
+
+
+
+}
+
+export const loadPokemonByApi = async (name : string | string[] | undefined) => {
+
+    let results : Pokemon = {};
+
+    const apiPokemonList = `https://pokeapi.co/api/v2/pokemon/${name}`;
+    const response = await fetch(apiPokemonList).then(response => {
+        if (!response.ok) {
+            throw new Error("HTTP error " + response.status);
+        }
+        return response.json();
+    }).then(json => {
+            results = json;
+        })
+        .catch(function (e) {
+            console.error(e);
+        });
+
+    return results;
 }
