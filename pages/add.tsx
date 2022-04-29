@@ -5,7 +5,7 @@ import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui
 import {Simplex} from "../types/Simplex";
 import colors from "../components/atoms/colors";
 import {addPokemon} from "../services/pokemonGetter";
-import {router} from "next/client";
+import {useRouter} from "next/router";
 
 
 
@@ -161,6 +161,7 @@ const validationSchema = yup.object({
 });
 
 const Add = () => {
+    const router = useRouter();
     const formik = useFormik({
         initialValues: {
             name: '',
