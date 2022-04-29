@@ -14,12 +14,13 @@ const styles = {
     },
     pagination: {
         position: 'fixed',
-        width: '100%',
         display: 'flex',
         justifyContent: 'center',
         background: '#2b1f2c',
         height: 42,
-        bottom: 0
+        bottom: '5vh',
+        borderRadius: 20,
+        boxShadow: '0 3px 6px rgba(0,0,0,.25)'
     }
 };
 

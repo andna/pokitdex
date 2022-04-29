@@ -5,34 +5,47 @@ import {
     CardContent, Grid, Typography, Skeleton,
 } from "@mui/material";
 import Link from 'next/link'
-import {loadPokemonByApi} from "../../services/pokemonGetter";
+import {getTitle, loadPokemonByApi} from "../../services/pokemonGetter";
 import Typing from "../molecules/Typing";
 import Naming from "../molecules/Naming";
 import Avatar from "../molecules/Avatar";
 import PokeIndex from "../atoms/PokeIndex";
 import {ChevronRight} from "@mui/icons-material";
+import PageContent from "./PageContent";
 
 type Props = {
     pokemonName: string;
     isFirstOfPage?: boolean;
+    isPage?: boolean;
 }
 
 const styles = {
     card: {
-        width: 350,
+        width: 345,
         marginBottom: 2,
         overflow: 'unset',
+    },
+    pageCard:{
+        width: 800,
+        maxWidth: 'calc(100vw - 42px)',
+    },
+    clickeable: {
         cursor: 'pointer !important',
         "&:hover": {
             filter: 'brightness(1.1)'
         }
     },
+    externalPadding: {
+        padding: '0.1em !important',
+    },
+    internalPadding: {
+        padding: '1em',
+    },
     cardContent: {
         display: 'flex',
         alignItems: 'center',
         flex: 1,
-        padding: '0.1em !important',
-        position: 'relative'
+        position: 'relative' as 'relative'
     },
     title: {
         width: '100%',
@@ -48,43 +61,17 @@ const styles = {
     },
     chevron: {
         justifySelf: 'center'
+    },
+    pageContent: {
+        width: '100%'
     }
 }
 
-const compare = (pokemonId: number, specificIndex: number, comparator: string) => {
-    switch (comparator){
-        case '>':
-            return pokemonId > specificIndex;
-        case '===':
-            return pokemonId === specificIndex;
-    }
-}
 
-const getTitle = (index: number, comparator: string) => {
-    const positions = [
-        {pos: 0, title: '1st Gen'},
-        {pos: 152, title: '2nd Gen'},
-        {pos: 252, title: '3rd Gen'},
-        {pos: 387, title: '4th Gen'},
-        {pos: 494, title: '5th Gen'},
-        {pos: 650, title: '6th Gen'},
-        {pos: 722, title: '7th Gen'},
-        {pos: 810, title: '8th Gen'},
-        {pos: 10001, title: 'Forms'},
-        {pos: 10033, title: 'Mega Evolutions'},
-        {pos: 10080, title: 'Other Forms'},
-        {pos: 10195, title: 'Gmax Forms'},
-    ];
-    let foundTitle = '';
-    positions.forEach(position => {
-        if(compare(index, position.pos, comparator)){
-            foundTitle = position.title;
-        }
-    });
-    return foundTitle;
-}
 
-const PokemonCard: React.FC<Props> = ({ pokemonName, isFirstOfPage = false }) => {
+const PokemonCard: React.FC<Props> = ({ pokemonName,
+                                          isFirstOfPage = false,
+                                          isPage = false  }) => {
 
     const [pokemonInfo, setPokemonInfo] = useState<Pokemon | null>();
 
@@ -98,41 +85,52 @@ const PokemonCard: React.FC<Props> = ({ pokemonName, isFirstOfPage = false }) =>
 
 
     return <>
-        {pokemonInfo && (isFirstOfPage || getTitle(pokemonInfo.id, '===')) &&
+        {!isPage && pokemonInfo && (isFirstOfPage || getTitle(pokemonInfo.id, true)) &&
         <Typography variant={'h6'}
                     sx={styles.title}
         >
-           { getTitle(pokemonInfo.id, isFirstOfPage ? '>' : '===') }
+           { getTitle(pokemonInfo.id, !isFirstOfPage) }
         </Typography>}
         <Grid key={pokemonName} item>
 
-            <Link href={`/${pokemonName}`}>
-                <Card sx={styles.card}>
+            <Link href={isPage ? 'javascript:void(0)' : `/${pokemonName}`}>
+                <Card sx={{...styles.card, ...(isPage ? styles.pageCard: styles.clickeable)}}>
                     {pokemonInfo ?
                             <>
-                                <CardContent sx={styles.cardContent}>
-                                    <div>
-                                        <Avatar pokemonName={pokemonName}
-                                                sprites={pokemonInfo?.sprites} />
-                                        <PokeIndex pokemonIndex={pokemonInfo.id} />
-
-
-                                    </div>
-                                    <div style={styles.nameContainer}>
-                                        <Naming pokemon={pokemonInfo}/>
+                                <CardContent sx={styles.externalPadding}>
+                                    <div style={styles.cardContent}>
                                         <div>
-                                            {pokemonInfo?.types?.map((type : Type) => {
-                                                return <Typing key={type.slot} typing={type}/>
-                                            })}
+                                            <Avatar pokemonName={pokemonName}
+                                                    isPage={isPage}
+                                                    sprites={pokemonInfo?.sprites} />
+                                            <PokeIndex pokemonIndex={pokemonInfo.id}
+                                                       isPage={isPage} />
                                         </div>
+                                        <div style={styles.nameContainer}>
+                                            <Naming pokemon={pokemonInfo}/>
+                                            <div>
+                                                {pokemonInfo?.types?.map((type : Type) => {
+                                                    return <Typing key={type.slot} typing={type}/>
+                                                })}
+                                            </div>
+                                            {isPage &&
+                                                <Typography  variant={'caption'} sx={{opacity: 0.5}}>
+                                                    <b>{ getTitle(pokemonInfo.id) }</b> group.
+                                                </Typography>
+                                            }
+                                        </div>
+                                        {!isPage && <ChevronRight/>}
                                     </div>
-                                    <ChevronRight />
+
+                                    {isPage && <div style={styles.internalPadding}>
+                                        <PageContent pokemon={pokemonInfo}/>
+                                    </div>}
                                 </CardContent>
 
 
                             </>
                     :
-                        <Skeleton variant="rectangular" width={210} height={130} />
+                        <Skeleton variant="rectangular" width={210} height={110} />
                     }
                 </Card>
             </Link>

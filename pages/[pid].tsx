@@ -17,7 +17,7 @@ const PokemonPage = () => {
 
     return <>
         {loadedPokemon ?
-            <PokemonCard pokemonName={pid as string}/>
+            <PokemonCard pokemonName={pid as string} isPage/>
             :
             <Loader />
         }

@@ -6,8 +6,10 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import colors from "../atoms/colors";
 
-import Image from "next/image";
 import Head from 'next/head';
+import {useRouter} from "next/router";
+import {changeDashForSpace} from "../../services/pokemonGetter";
+import {Close} from "@mui/icons-material";
 
 type Props = {
     children?: React.ReactNode;
@@ -37,6 +39,9 @@ const theme : Theme = createTheme({
 
 const styles = {
 
+    logo:{
+        filter:'drop-shadow(0px 3px 2px rgba(0,0,0,.3))',
+    },
     appbar: {
         padding: '8px',
         display: 'flex',
@@ -60,17 +65,31 @@ const styles = {
         marginTop: 100,
         color: colors.footerColor,
     },
+    backer: {
+        cursor: 'pointer',
+        paddingRight: 2,
+        marginRight: 4
+    }
 }
 
-const title : string = 'pokitdex by abf';
+const title : string = 'Pok\'it Dex by abf';
 
 const Layout: React.FC<Props> = ( { children } ) => {
 
+    const router = useRouter()
+    const { asPath } = router
+
+
+    const goBack = () => {
+        router.back()
+    }
+    const isHome = (asPath === '/' || asPath.includes("page") );
+    console.log(router.pathname)
     return (<div>
 
         <Head>
             <title>{title}</title>
-            <meta name="description" content="Andres Bastidas F - Media Monks Challenge" />
+            <meta name="description" content="Andres Bastidas F - BlockChain.com Challenge" />
             <link rel="icon" href="/favicon.ico" />
         </Head>
 
@@ -79,9 +98,25 @@ const Layout: React.FC<Props> = ( { children } ) => {
                 <CssBaseline />
                 <AppBar>
                     <div style={styles.appbar}>
-                        <Image src="/vercel.svg" alt={title} width={40} height={16}/>
+                        {isHome
+                            ?
+                            <></>
+                            :
+                            <Close style={styles.backer} onClick={() => {
+                                router.back()
+                            }} />
+                        }
+
+                        <img style={styles.logo} src="/pokitdex.svg" alt={title} width={40} height={24}/>
                         <Typography component="div" sx={{ flexGrow: 1, fontWeight: 800 }}>
-                            { title }
+                            { isHome
+                                ?
+                                title
+                                :
+                                <span style={{textTransform: 'capitalize'}}>
+                                    {changeDashForSpace(asPath.replace("/",""))}
+                                </span>
+                                }
                         </Typography>
 
                     </div>

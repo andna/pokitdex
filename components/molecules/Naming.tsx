@@ -4,6 +4,7 @@ import {
     Chip, Typography
 } from "@mui/material";
 import colors from "../atoms/colors";
+import {changeDashForSpace} from "../../services/pokemonGetter";
 
 
 type Props = {
@@ -25,16 +26,13 @@ const styles = {
         fontWeight: 300,
         lineHeight: 0.1,
         position: 'relative',
-        marginBottom: 3,
+        marginBottom: 1.6,
         display: 'block',
         top: 0,
         textTransform: 'capitalize'
     },
 }
 
-const changeDashForSpace = (stringToChange : string) => {
-    return stringToChange.split("-").join(" ");
-}
 
 const Naming: React.FC<Props> = ({ pokemon }) => {
 

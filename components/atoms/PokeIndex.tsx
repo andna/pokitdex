@@ -1,9 +1,5 @@
 import React from "react";
-import {Type} from "../../types/Pokemon";
-import {
-    Chip, Typography
-} from "@mui/material";
-import colors from "../atoms/colors";
+import { Typography } from "@mui/material";
 
 const styles = {
     indexNumber: {
@@ -12,9 +8,15 @@ const styles = {
         fontFamily: 'monospace',
         letterSpacing: '0.3em',
         position: 'absolute',
-        left: 13,
-        bottom: 17,
-        opacity: .5
+        left: 2,
+        bottom: 8,
+        opacity: .5,
+        padding: 1
+    },
+    indexNumberPage: {
+        left: 'initial',
+        bottom: 'initial',
+        top: '4.2vw'
     },
     identifier: {
         letterSpacing: 0
@@ -22,6 +24,7 @@ const styles = {
 }
 type Props = {
     pokemonIndex: number;
+    isPage: boolean;
 }
 
 const myformat = new Intl.NumberFormat('en-US', {
@@ -31,9 +34,10 @@ const myformat = new Intl.NumberFormat('en-US', {
 
 const numberWhereFormsStart = 10000;
 
-const PokeIndex: React.FC<Props> = ({ pokemonIndex }) => {
+const PokeIndex: React.FC<Props> = ({ pokemonIndex, isPage = false }) => {
     return <Typography variant={'caption'}
-                           sx={styles.indexNumber}>
+                           sx={{...styles.indexNumber,
+                               ...(isPage ? styles.indexNumberPage : null)}}>
         {pokemonIndex > numberWhereFormsStart ?
             <>
                 <span style={styles.identifier}>Form </span>
