@@ -6,10 +6,11 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import colors from "../atoms/colors";
 
+import Link from 'next/link'
 import Head from 'next/head';
 import {useRouter} from "next/router";
 import {changeDashForSpace} from "../../services/pokemonGetter";
-import {Close} from "@mui/icons-material";
+import {Add, Close} from "@mui/icons-material";
 
 type Props = {
     children?: React.ReactNode;
@@ -69,6 +70,17 @@ const styles = {
         cursor: 'pointer',
         paddingRight: 2,
         marginRight: 4
+    },
+    adder: {
+        cursor: 'pointer',
+        paddingRight: 2,
+        marginRight: 16,
+        display: 'flex',
+        alignItems: 'center',
+        opacity: 0.8,
+        "&:hover":{
+            opacity: 1
+        }
     }
 }
 
@@ -79,16 +91,13 @@ const Layout: React.FC<Props> = ( { children } ) => {
     const router = useRouter()
     const { asPath } = router
 
-
-    const goBack = () => {
-        router.back()
-    }
     const isHome = (asPath === '/' || asPath.includes("page") );
-    console.log(router.pathname)
+    const otherTitle = changeDashForSpace(asPath.replace("/",""));
+
     return (<div>
 
         <Head>
-            <title>{title}</title>
+            <title>{isHome ? null : `${otherTitle.toUpperCase()} |`} {title}</title>
             <meta name="description" content="Andres Bastidas F - BlockChain.com Challenge" />
             <link rel="icon" href="/favicon.ico" />
         </Head>
@@ -114,10 +123,14 @@ const Layout: React.FC<Props> = ( { children } ) => {
                                 title
                                 :
                                 <span style={{textTransform: 'capitalize'}}>
-                                    {changeDashForSpace(asPath.replace("/",""))}
+                                    {otherTitle}
                                 </span>
                                 }
                         </Typography>
+                        {isHome && <Link href={'/add'}><div style={styles.adder}>
+                            Add
+                            <Add/>
+                        </div></Link>}
 
                     </div>
                 </AppBar>

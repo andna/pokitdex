@@ -31,6 +31,14 @@ const colors = {
         dark: "#705848",
         steel: "#b8b8d0",
         fairy: "#ee99ac"
+    },
+    icons: {
+        hp: '#ff87c5',
+        attack: '#f44f7a',
+        defense: '#5ff8ff',
+        specialAttack: '#6ef838',
+        specialDefense: '#ffa284',
+        speed: '#cf7cff',
     }
 }
 

@@ -130,7 +130,7 @@ const PokemonCard: React.FC<Props> = ({ pokemonName,
 
                             </>
                     :
-                        <Skeleton variant="rectangular" width={210} height={110} />
+                        <Skeleton variant="rectangular" width={210} height={isPage ? 800 : 110} />
                     }
                 </Card>
             </Link>
