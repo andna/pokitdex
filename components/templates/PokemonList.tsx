@@ -81,7 +81,7 @@ export default function PokemonList({  }) {
                             .map((pokemon : Pokemon, index: number) => {
                                 return <PokemonCard pokemonName={pokemon.name}
                                                     isFirstOfPage={index === 0}
-                                                    key={pokemon.name} />
+                                                    key={`${pokemon.name}-${index}`} />
                             })}
                     </Grid>
 

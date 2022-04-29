@@ -48,6 +48,9 @@ const styles = {
         display: 'flex',
         fontSize: '0.8em',
         userSelect: 'none' as 'none',
+        maxWidth: 1220,
+        width: '116vw',
+        margin: '0 auto'
     },
     content: {
         marginTop: 8,
@@ -74,12 +77,12 @@ const styles = {
     adder: {
         cursor: 'pointer',
         paddingRight: 2,
-        marginRight: 16,
+        marginRight: 60,
         display: 'flex',
         alignItems: 'center',
         opacity: 0.8,
-        "&:hover":{
-            opacity: 1
+        "&:hover": {
+            opacity: 0.2
         }
     }
 }

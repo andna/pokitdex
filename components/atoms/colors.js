@@ -12,6 +12,7 @@ const colors = {
     secondary: '#eb7171',
     white: '#ffffff',
     lightGray: '#d6dce6',
+    error: '#ff6d6d',
     types: {
         normal: "#a8a878",
         fire: "#f08030",

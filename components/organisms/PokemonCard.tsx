@@ -1,17 +1,18 @@
 import React, {useEffect, useState} from "react";
 import { Pokemon, Type } from "../../types/Pokemon";
 import {
-    Card, Button, CardActions,
-    CardContent, Grid, Typography, Skeleton,
+    Card,
+    CardContent, Grid, Typography, Skeleton, Tooltip,
 } from "@mui/material";
 import Link from 'next/link'
-import {getTitle, loadPokemonByApi} from "../../services/pokemonGetter";
+import {getTitle, loadPokemonByApi, deleteCustom} from "../../services/pokemonGetter";
 import Typing from "../molecules/Typing";
 import Naming from "../molecules/Naming";
 import Avatar from "../molecules/Avatar";
 import PokeIndex from "../atoms/PokeIndex";
-import {ChevronRight} from "@mui/icons-material";
+import {ChevronRight, Close, Delete, DeleteOutline} from "@mui/icons-material";
 import PageContent from "./PageContent";
+import {useRouter} from "next/router";
 
 type Props = {
     pokemonName: string;
@@ -64,6 +65,19 @@ const styles = {
     },
     pageContent: {
         width: '100%'
+    },
+    deleters: {
+        marginRight: 1,
+        cursor: 'pointer'
+    },
+    deleterContainer: {
+        opacity: 0.6,
+        fontSize: 14,
+        display: 'flex',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        margin: '-10px 0 15px',
+        color: '#eb7272'
     }
 }
 
@@ -74,6 +88,7 @@ const PokemonCard: React.FC<Props> = ({ pokemonName,
                                           isPage = false  }) => {
 
     const [pokemonInfo, setPokemonInfo] = useState<Pokemon | null>();
+    const [startedDelete, setStartedDelete] = useState<boolean>();
 
     useEffect(() => {
         fetchPokemonData();
@@ -83,13 +98,14 @@ const PokemonCard: React.FC<Props> = ({ pokemonName,
         setPokemonInfo(await loadPokemonByApi(pokemonName));
     };
 
+    const router = useRouter();
 
     return <>
         {!isPage && pokemonInfo && (isFirstOfPage || getTitle(pokemonInfo.id, true)) &&
         <Typography variant={'h6'}
                     sx={styles.title}
         >
-           { getTitle(pokemonInfo.id, !isFirstOfPage) }
+           { getTitle(pokemonInfo.id, true) || getTitle(pokemonInfo.id, false) }
         </Typography>}
         <Grid key={pokemonName} item>
 
@@ -123,6 +139,27 @@ const PokemonCard: React.FC<Props> = ({ pokemonName,
                                     </div>
 
                                     {isPage && <div style={styles.internalPadding}>
+                                        {pokemonInfo.id < 0 &&
+                                        <div style={styles.deleterContainer}>
+                                            {startedDelete ? <>
+                                                    <Tooltip title="Are you sure about Deleting them?">
+                                                       <Delete sx={styles.deleters} onClick={() => {
+                                                           router.push('/');
+                                                           deleteCustom(pokemonName);
+                                                       }}/>
+                                                    </Tooltip>
+                                                    <span>¿Confirm Delete?</span>
+                                                    <Tooltip title="Don't delete">
+                                                        <Close sx={styles.deleters} onClick={() => setStartedDelete(false)}/>
+                                                    </Tooltip>
+                                                </>
+                                                :
+                                                <Tooltip title="Delete this hero?">
+                                                    <> Delete Custom <DeleteOutline sx={styles.deleters} onClick={() => setStartedDelete(true)}/></>
+                                                </Tooltip>
+                                            }
+                                        </div>
+                                        }
                                         <PageContent pokemon={pokemonInfo}/>
                                     </div>}
                                 </CardContent>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { Avatar as AvatarMui} from "@mui/material";
 import colors from "../atoms/colors";
 import {Sprites} from "../../types/Pokemon";
@@ -20,6 +20,10 @@ const styles = {
         width:'400px',
         maxHeight: '45vw',
         maxWidth: '45vw',
+    },
+    errorImage: {
+        transform: 'scale(0.8)',
+        filter: 'grayscale(0.9) brightness(1.4)'
     }
 }
 type Props = {
@@ -32,28 +36,27 @@ type Props = {
 
 const Avatar: React.FC<Props> = ({ pokemonName, sprites, isPage }) => {
 
-    const front = sprites.front_default;
-    const frontShiny = sprites.front_shiny;
-    const frontHome = sprites.other?.home?.front_default;
-    const official = sprites.other["official-artwork"]?.front_default;
-    const gen8 = sprites.versions["generation-viii"]?.icons?.front_default;
+    const front = sprites?.front_default;
+    const frontShiny = sprites?.front_shiny;
+    const frontHome = sprites?.other?.home?.front_default;
+    const official = sprites?.other && sprites.other["official-artwork"]?.front_default;
+    const gen8 = sprites?.versions &&  sprites.versions["generation-viii"]?.icons?.front_default;
 
-    const image =  isPage
+    const altImgForErrors = '/pokitdex.svg';
+
+    const [image, setImage] =  useState<string>(isPage
             ?
             (official || frontHome || front || frontShiny || gen8)
             :
             (front || frontShiny || official || frontHome || gen8)
-    ;
+    );
 
-    return   <>
-        {image ?
-            <img src={image} alt={pokemonName} style={{...styles.image, ...(isPage ? styles.bigImage : null)}}/>
-            :
-            <AvatarMui alt={pokemonName} sx={styles.avatar} >
-                {pokemonName.slice(0, 2).toUpperCase()}
-            </AvatarMui>
-        }
-        </>
+    return  <img
+        onError={() => { setImage(altImgForErrors)}}
+        src={image ? image : altImgForErrors} alt={pokemonName}
+        style={{...styles.image,
+            ...(isPage ? styles.bigImage : null),
+            ...((!image || image === altImgForErrors) ? styles.errorImage : null)}}/>
 }
 
 export default Avatar;

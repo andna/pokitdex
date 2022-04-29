@@ -38,14 +38,23 @@ const PokeIndex: React.FC<Props> = ({ pokemonIndex, isPage = false }) => {
     return <Typography variant={'caption'}
                            sx={{...styles.indexNumber,
                                ...(isPage ? styles.indexNumberPage : null)}}>
-        {pokemonIndex > numberWhereFormsStart ?
+
+        {pokemonIndex < 0 ?
             <>
-                <span style={styles.identifier}>Form </span>
-                #{myformat.format(pokemonIndex - numberWhereFormsStart)}
+                <span style={styles.identifier}>Custom </span>
+                #{Math.abs(pokemonIndex)}
             </>
             :
-            <>#{myformat.format(pokemonIndex)}</>
+            (pokemonIndex > numberWhereFormsStart ?
+                <>
+                    <span style={styles.identifier}>Form </span>
+                    #{myformat.format(pokemonIndex - numberWhereFormsStart)}
+                </>
+                :
+                <>#{myformat.format(pokemonIndex)}</>
+            )
         }
+
     </Typography>
 }
 

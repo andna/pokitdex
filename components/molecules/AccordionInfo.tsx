@@ -60,7 +60,7 @@ const AccordionInfo: React.FC<Props> = ({ startsExpanded = false,
 
     return  <AccordionRoot
         elevation={3}
-        disabled={info.length === 0}
+        disabled={info && info.length === 0}
         expanded={expanded === title}
         onChange={handleChange(title)}
     >
@@ -69,7 +69,7 @@ const AccordionInfo: React.FC<Props> = ({ startsExpanded = false,
             <span style={styles.capitalize}>
                 {changeDashForSpace(title)}
                 {title !== 'stats' &&
-                <small style={styles.miniInfo}> ({info.length}{
+                <small style={styles.miniInfo}> ({info && info.length}{
                     title !== 'moves' &&
                         title !== 'stats' &&
                         title !== 'abilities' &&
@@ -79,7 +79,7 @@ const AccordionInfo: React.FC<Props> = ({ startsExpanded = false,
         </AccordionSummaryContainer>
         <AccordionDetails>
             <ul style={styles.ul}>
-                {info.map((data, i) => {
+                {info && info.map((data, i) => {
                     switch(title){
                         case 'stats':
                             return  <LiStat data={data as Stat} key={`${title}-${i}`}/>
