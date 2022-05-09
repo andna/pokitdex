@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {Box, InputAdornment, TextField, Tooltip, useTheme} from "@mui/material";
 import {Search as SearchIcon, Close, Star, StarBorderOutlined} from "@mui/icons-material";
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,24 +10,21 @@ const styles = {
     },
     input: {
         flex: 1,
-        marginRight: 2
+        marginRight: 2,
+        '& .MuiInputBase-input':{
+            height: 15,
+        },
+        '& .MuiFormLabel-root:not(.Mui-focused):not(.Mui-filled)':{
+           transform: 'translate(14px, 13px) scale(1)'
+        }
     },
     box: {
-        position: 'fixed',
-        borderRadius: 3,
-        padding: 1.6,
-        zIndex: 2,
-        top: 35,
-        width: '100%',
-        textAlign: 'center',
-        display: 'flex',
-        justifyContent: 'center'
+        maxWidth: '50vw',
     },
     container: {
         display: 'flex',
         alignItems: 'center',
-        width: 350,
-        paddingRight: 12
+        width: '100%',
     },
     favoriter: {
         cursor: 'pointer',
@@ -40,9 +37,8 @@ type Props = {
 const Search: React.FC<Props> = ({  }) => {
 
 
-    const searchTerm = useSelector((s) => s.searchT);
+    const searchTerm = useSelector((s: {searchT: string}) => s.searchT);
     const dispatch = useDispatch();
-
 
     const theme = useTheme();
 
@@ -50,7 +46,6 @@ const Search: React.FC<Props> = ({  }) => {
 
     const handleSearch = (value : string) => {
         dispatch({ type: "SET", payload: value })
-
     }
 
 
@@ -60,7 +55,6 @@ const Search: React.FC<Props> = ({  }) => {
             component="form"
             sx={{
                 ...styles.box,
-                background: theme.palette.background.default
             }}
             noValidate
             autoComplete="off"
@@ -68,7 +62,7 @@ const Search: React.FC<Props> = ({  }) => {
             <div style={styles.container}>
                 <TextField
                     id="outlined-basic"
-                    placeholder="by name, comics, stories, series"
+                    placeholder="by name"
                     label="Search"
                     variant="outlined"
                     color="secondary"

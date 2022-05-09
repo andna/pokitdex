@@ -11,7 +11,7 @@ import Head from 'next/head';
 import {useRouter} from "next/router";
 import {changeDashForSpace} from "../../services/pokemonGetter";
 import {Add, Close} from "@mui/icons-material";
-import Search from "../molecules/Search/Search";
+import Search from "../molecules/Search";
 
 type Props = {
     children?: React.ReactNode;
@@ -50,8 +50,9 @@ const styles = {
         fontSize: '0.8em',
         userSelect: 'none' as 'none',
         maxWidth: 1220,
-        width: '116vw',
-        margin: '0 auto'
+        width: '100vw',
+        margin: '0 auto',
+        alignItems: 'center' as 'center'
     },
     content: {
         marginTop: 8,
@@ -88,7 +89,7 @@ const styles = {
     }
 }
 
-const title : string = 'Pok\'it Dex by abf';
+const title : string = 'Pok\'it Dex';
 
 const Layout: React.FC<Props> = ( { children } ) => {
 
@@ -131,11 +132,8 @@ const Layout: React.FC<Props> = ( { children } ) => {
                                 </span>
                                 }
                         </Typography>
-                        {isHome && <Link href={'/add'}><div style={styles.adder}>
-                            Add
-                            <Add/>
-                        </div></Link>}
-                        <Search  />
+                        {isHome && <Search  />}
+
                     </div>
                 </AppBar>
                 <Container component="main" sx={styles.content}>

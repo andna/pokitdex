@@ -26,15 +26,14 @@ const styles = {
     }
 };
 
-
-const pokemonsPerScroll = 50;
-
 type Props = {
 }
+
 
 const PokemonList: React.FC<Props> = ({  }) => {
 
     const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+    const [pokemonsPerScroll, setPokemonsPerScroll] = useState<number>(0);
     const [filteredPokemons, setFilteredPokemons] = useState<Pokemon[]>([]);
     const [shownPokemons, setShownPokemons] = useState<Pokemon[]>([]);
     const [pageQuantity, setPageQuantity] = useState<number>(0);
@@ -44,14 +43,25 @@ const PokemonList: React.FC<Props> = ({  }) => {
     const router = useRouter();
 
     useEffect(() => {
-        fetchPokemonList();
+        window.scrollTo(0, 0)
+        resetPerScrollAmount()
     }, [])
+    useEffect(() => {
+        if(pokemonsPerScroll > 0 && pokemons.length === 0){
+            fetchPokemonList();
+        }
+    }, [pokemonsPerScroll])
+
+    const resetPerScrollAmount = () => {
+        const avgCardSize = { w: 360, h: 100 };
+        setPokemonsPerScroll(Math.ceil((window.innerWidth / avgCardSize.w) * (window.innerHeight / avgCardSize.h)));
+    }
 
     const fetchPokemonList = async () => {
         let pokes = await getAllPokemonsByApi();
         setPageQuantity(Math.ceil(pokes.length / pokemonsPerScroll));
         setPokemons(pokes);
-        setFilteredPokemons(pokes);
+        filterPokemons(searchTerm, pokes);
         setLoading(false);
     };
 
@@ -62,7 +72,7 @@ const PokemonList: React.FC<Props> = ({  }) => {
 
 
     const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-        window.scrollTo(0, 4000)
+        //window.scrollTo(0, 4000)
         //changePage(value);
     };
 
@@ -79,14 +89,27 @@ const PokemonList: React.FC<Props> = ({  }) => {
         }
     }, [router.query.page])
 
-
-    function showMorePokemons(){
-        setShownPokemons(oldPokemons => {
-            const initSlice = searchTerm ? 0 : oldPokemons.length;
-            const pokemonsSlice = filteredPokemons.slice(initSlice, initSlice + pokemonsPerScroll)
-            return [...(searchTerm ? [] : oldPokemons), ...pokemonsSlice];
+    const showMorePokemons = () => {
+        resetPerScrollAmount();
+        setShownPokemons(oldShownPokemons => {
+            const heroesSlice = filteredPokemons.slice(oldShownPokemons.length, oldShownPokemons.length + pokemonsPerScroll)
+            return [...oldShownPokemons, ...heroesSlice];
         });
+    };
+
+    const filterPokemons = (filterString : string, pokes : Pokemon[] = pokemons) => {
+
+        const newFilteredPokemons = pokes.filter((pokemon: Pokemon) => {
+            const enters = pokemon.name
+                .toLowerCase().includes(filterString.toLowerCase());
+            return enters;
+        });
+        setFilteredPokemons(newFilteredPokemons);
+        const slicedHeroes = newFilteredPokemons.slice(0, pokemonsPerScroll);
+        setShownPokemons(slicedHeroes);
+        //setNoHeroFound(newFilteredPokemons.length === 0)
     }
+
 
     setTimeout(()=>{
         //window.scrollTo({top: 3000})
@@ -97,8 +120,7 @@ const PokemonList: React.FC<Props> = ({  }) => {
 
 
     useEffect(() => {
-        const pokemonsFiltered = pokemons.filter(pokemon => pokemon.name.toLowerCase().includes(searchTerm.toLowerCase()))
-        setFilteredPokemons(pokemonsFiltered);
+        filterPokemons(searchTerm);
     }, [searchTerm])
 
     return (
@@ -117,6 +139,7 @@ const PokemonList: React.FC<Props> = ({  }) => {
                         <Grid {...styles.grid}>
                             {shownPokemons.map((pokemon: Pokemon, index: number) => (
                                 <PokemonCard pokemonName={pokemon.name}
+                                             isCurrentlySearching={searchTerm.length > 0}
                                              isFirstOfPage={index === 0}
                                              key={`${pokemon.name}-${index}`} />
                             ))}

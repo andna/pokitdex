@@ -1,4 +1,5 @@
-import {AbilityObject, Pokemon} from "../types/Pokemon";
+import {AbilityObject, Pokemon, ShallowPokemon, Sprites} from "../types/Pokemon";
+import {Simplex} from "../types/Simplex";
 
 const localIdPreffix = 'pokemon-';
 const localIdList = `${localIdPreffix}list`;
@@ -20,7 +21,9 @@ export const getAllPokemonsByApi = async () => {
             }
             return response.json();
         }).then(json => {
-            results = json.results;
+            results = json.results.map((result: Simplex) => {
+                return {name: result.name}
+            });
         })
             .catch(function (e) {
                 console.error(e)
@@ -35,19 +38,41 @@ export const getAllPokemonsByApi = async () => {
 
 }
 
-export const loadPokemonByApi = async (name : string | string[] | undefined) => {
+export const loadPokemonByApi = async (name : string | string[] | undefined, needsFullInfo : boolean = false) => {
 
     let result : Pokemon | null = null;
 
     const customPokemon = localStorage.getItem(`custom-${name}`);
+    const shallowPokemon = localStorage.getItem(`shallow-${name}`);
 
     if(customPokemon){
         result = JSON.parse(customPokemon);
+    } else if (shallowPokemon && !needsFullInfo) {
+        result = JSON.parse(shallowPokemon);
     } else {
         const apiPokemonList = `https://pokeapi.co/api/v2/pokemon/${name}`;
         const response = await fetch(apiPokemonList).then(response =>  response.json())
             .then(json => {
                 result = json;
+                const sprites = json.sprites
+                const shortSprites = sprites && findSprites(sprites);
+                const types = json.types;
+                const shortTypes = types && [
+                    {slot: 1, type: {name: types[0].type.name}}
+                ];
+                if(types && types[1]){
+                    shortTypes.push(
+                        {slot: 2, type: {name: types[1].type.name}}
+                    )
+                }
+                const newShallowPokemon: ShallowPokemon = {
+                    id: json.id,
+                    name: json.name,
+                    types: shortTypes,
+                    species: {name: json.species.name},
+                    sprites: shortSprites
+                };
+                localStorage.setItem(`shallow-${json.name}`, JSON.stringify(newShallowPokemon));
             })
             .catch(function (e) {
                 console.error(e);
@@ -58,6 +83,33 @@ export const loadPokemonByApi = async (name : string | string[] | undefined) => 
     return result;
 }
 
+const findSprites = (sprites : Sprites) => {
+    return {
+        ...(sprites.front_default ?
+                {front_default: sprites.front_default}
+                :
+                (sprites.front_shiny ?
+                        {front_shiny: sprites.front_shiny}
+                        :
+                        (
+                            sprites.other?.home?.front_default ?
+                                { other: { home: {front_default : sprites.other?.home?.front_default}}}
+                                :
+                                (  (sprites.other && sprites.other["official-artwork"]?.front_default) ?
+                                        { other: { ["official-artwork"]: {front_default : sprites.other["official-artwork"]?.front_default}}}
+                                        :
+                                        (
+                                            (sprites.versions && sprites.versions["generation-viii"]?.icons?.front_default) ?
+                                                { other: { ["generation-viii"]: {icons: {front_default : sprites.versions["generation-viii"]?.icons?.front_default}}}}
+                                                :
+                                                {front_default: null}
+                                        )
+                                )
+                        )
+                )
+        ),
+    }
+}
 
 const compare = (pokemonId: number, specificIndex: number, mustBeEqual: boolean) => {
     if (mustBeEqual) {

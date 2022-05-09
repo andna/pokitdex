@@ -18,6 +18,7 @@ type Props = {
     pokemonName: string;
     isFirstOfPage?: boolean;
     isPage?: boolean;
+    isCurrentlySearching?: boolean;
 }
 
 const styles = {
@@ -25,6 +26,7 @@ const styles = {
         width: 345,
         marginBottom: 2,
         overflow: 'unset',
+        position: 'relative' as 'relative'
     },
     pageCard:{
         width: 800,
@@ -78,6 +80,20 @@ const styles = {
         alignItems: 'center',
         margin: '-10px 0 15px',
         color: '#eb7272'
+    },
+    pokemonSkeletonContainer:{
+        position: 'relative' as 'relative'
+
+    },
+    pokemonSkeleton: {
+        position: 'absolute' as 'absolute',
+        width: '100%',
+        textAlign: 'center' as 'center',
+        zIndex: 1,
+        textTransform: 'capitalize' as 'capitalize',
+        bottom: 'calc(50% - 20px)',
+        fontWeight: 300,
+        fontSize: '70%'
     }
 }
 
@@ -85,7 +101,8 @@ const styles = {
 
 const PokemonCard: React.FC<Props> = ({ pokemonName,
                                           isFirstOfPage = false,
-                                          isPage = false  }) => {
+                                          isPage = false,
+                                          isCurrentlySearching = false}) => {
 
     const [pokemonInfo, setPokemonInfo] = useState<Pokemon | null>();
     const [startedDelete, setStartedDelete] = useState<boolean>();
@@ -95,13 +112,13 @@ const PokemonCard: React.FC<Props> = ({ pokemonName,
     }, [])
 
     const fetchPokemonData = async () => {
-        setPokemonInfo(await loadPokemonByApi(pokemonName));
+        setPokemonInfo(await loadPokemonByApi(pokemonName, isPage));
     };
 
     const router = useRouter();
 
     return <>
-        {!isPage && pokemonInfo && (isFirstOfPage || getTitle(pokemonInfo.id, true)) &&
+        {!isCurrentlySearching && !isPage && pokemonInfo && (isFirstOfPage || getTitle(pokemonInfo.id, true)) &&
         <Typography variant={'h6'}
                     sx={styles.title}
         >
@@ -167,7 +184,11 @@ const PokemonCard: React.FC<Props> = ({ pokemonName,
 
                             </>
                     :
-                        <Skeleton variant="rectangular" width={210} height={isPage ? 800 : 110} />
+                        <div style={styles.pokemonSkeletonContainer}>
+                            <Skeleton variant="rectangular" width={'100%'} height={isPage ? 800 : 104} />
+                            <p style={styles.pokemonSkeleton}>{pokemonName}</p>
+                        </div>
+
                     }
                 </Card>
             </Link>

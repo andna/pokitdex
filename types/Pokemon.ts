@@ -1,6 +1,13 @@
 import {Simplex} from "./Simplex";
 
-export interface Pokemon extends Simplex{
+export interface ShallowPokemon extends Simplex{
+    id: number
+    types?: Type[];
+    sprites: Sprites;
+    species: Simplex;
+}
+
+export interface Pokemon extends ShallowPokemon{
     abilities: AbilityObject[];
     moves: Move[]
     stats: Stat[];
@@ -14,7 +21,6 @@ export interface Pokemon extends Simplex{
     location_area_encounters: string;
     order: number;
     past_types: any[];
-    species: Simplex;
     sprites: Sprites;
     types: Type[];
     weight: number;
