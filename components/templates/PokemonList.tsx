@@ -5,6 +5,7 @@ import {Grid, Pagination} from "@mui/material";
 import PokemonCard from "../../components/organisms/PokemonCard";
 import {useRouter} from "next/router";
 import {getAllPokemonsByApi} from "../../services/pokemonGetter";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const styles = {
     grid: {
@@ -24,14 +25,15 @@ const styles = {
     }
 };
 
+
+const pokemonsPerScroll = 50;
+
 export default function PokemonList({  }) {
 
-    const pokemonsPerPage = 27; //To achieve a personally chosen quantity of 42 pages.
     const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+    const [shownPokemons, setShownPokemons] = useState<Pokemon[]>([]);
     const [pageQuantity, setPageQuantity] = useState<number>(0);
     const [pageCurrent, setPageCurrent] = useState<number>(1);
-    const [pageOffsetIndexShown, setPageOffsetIndexShown] = useState<number>(0);
-    const [pageOffsetIndexShownEnd, setPageOffsetIndexShownEnd] = useState<number>(pokemonsPerPage);
     const [loading, setLoading] = useState<boolean>(true);
 
     const router = useRouter();
@@ -42,24 +44,26 @@ export default function PokemonList({  }) {
 
     const fetchPokemonList = async () => {
         let pokes = await getAllPokemonsByApi();
-        setPageQuantity(Math.ceil(pokes.length / pokemonsPerPage));
+        setPageQuantity(Math.ceil(pokes.length / pokemonsPerScroll));
         setPokemons(pokes);
         setLoading(false);
     };
 
+    useEffect(() => {
+        showMorePokemons()
+    }, [pokemons])
+
 
 
     const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-        window.scrollTo(0, 0)
-        changePage(value);
+        window.scrollTo(0, 4000)
+        //changePage(value);
     };
 
     const changePage = (toPage : number) => {
         setPageCurrent(toPage);
-        const pageOffsetIndex = (toPage - 1) * pokemonsPerPage;
-        const pageOffsetIndexEnd = pageOffsetIndex + pokemonsPerPage;
-        setPageOffsetIndexShown(pageOffsetIndex);
-        setPageOffsetIndexShownEnd(pageOffsetIndexEnd);
+        const pageOffsetIndex = (toPage - 1) * pokemonsPerScroll;
+        const pageOffsetIndexEnd = pageOffsetIndex + pokemonsPerScroll;
         router.push(`/?page=${toPage}`, undefined, { shallow: true })
     }
 
@@ -70,20 +74,40 @@ export default function PokemonList({  }) {
     }, [router.query.page])
 
 
+    function showMorePokemons(){
+        setShownPokemons(oldPokemons => {
+            const pokemonsSlice = pokemons.slice(oldPokemons.length, oldPokemons.length + pokemonsPerScroll)
+            console.log(oldPokemons, pokemonsSlice, pokemons);
+            return [...oldPokemons, ...pokemonsSlice];
+        });
+    }
+
+    setTimeout(()=>{
+        console.log(1);
+        //window.scrollTo({top: 3000})
+    }, 3000)
 
     return (
         <>
 
             {loading ? <Loader /> :
                 <>
-                    <Grid {...styles.grid}>
-                        {pokemons && pokemons?.slice(pageOffsetIndexShown, pageOffsetIndexShownEnd)
-                            .map((pokemon : Pokemon, index: number) => {
-                                return <PokemonCard pokemonName={pokemon.name}
-                                                    isFirstOfPage={index === 0}
-                                                    key={`${pokemon.name}-${index}`} />
-                            })}
-                    </Grid>
+                    <InfiniteScroll
+                        dataLength={shownPokemons.length}
+                        next={showMorePokemons}
+                        hasMore={true}
+                        loader={""}
+                        scrollThreshold={0.8}
+                        style={{ overflow: "unset" }}
+                    >
+                        <Grid {...styles.grid}>
+                            {shownPokemons.map((pokemon: Pokemon, index: number) => (
+                                <PokemonCard pokemonName={pokemon.name}
+                                             isFirstOfPage={index === 0}
+                                             key={`${pokemon.name}-${index}`} />
+                            ))}
+                        </Grid>
+                    </InfiniteScroll>
 
                 </>
             }

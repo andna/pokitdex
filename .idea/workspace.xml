@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="d703db4c-8f9a-4e96-b567-0bf937ff21f8" name="Changes" comment="Changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/atoms/LiAbility.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/atoms/LiAbility.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/templates/PokemonList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/templates/PokemonList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -70,7 +70,7 @@
       <workItem from="1651946645081" duration="765000" />
       <workItem from="1652051940047" duration="2089000" />
       <workItem from="1652085818607" duration="1144000" />
-      <workItem from="1652087127755" duration="513000" />
+      <workItem from="1652087127755" duration="2453000" />
     </task>
     <servers />
   </component>
