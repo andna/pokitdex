@@ -11,6 +11,7 @@ import Head from 'next/head';
 import {useRouter} from "next/router";
 import {changeDashForSpace} from "../../services/pokemonGetter";
 import {Add, Close} from "@mui/icons-material";
+import Search from "../molecules/Search/Search";
 
 type Props = {
     children?: React.ReactNode;
@@ -134,7 +135,7 @@ const Layout: React.FC<Props> = ( { children } ) => {
                             Add
                             <Add/>
                         </div></Link>}
-
+                        <Search  />
                     </div>
                 </AppBar>
                 <Container component="main" sx={styles.content}>

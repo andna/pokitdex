@@ -6,6 +6,7 @@ import PokemonCard from "../../components/organisms/PokemonCard";
 import {useRouter} from "next/router";
 import {getAllPokemonsByApi} from "../../services/pokemonGetter";
 import InfiniteScroll from "react-infinite-scroll-component";
+import {useSelector} from "react-redux";
 
 const styles = {
     grid: {
@@ -15,22 +16,26 @@ const styles = {
     },
     pagination: {
         position: 'fixed',
-        display: 'flex',
         justifyContent: 'center',
         background: '#2b1f2c',
         height: 42,
         bottom: '5vh',
         borderRadius: 20,
-        boxShadow: '0 3px 6px rgba(0,0,0,.25)'
+        boxShadow: '0 3px 6px rgba(0,0,0,.25)',
+        display: 'none' as 'none'
     }
 };
 
 
 const pokemonsPerScroll = 50;
 
-export default function PokemonList({  }) {
+type Props = {
+}
+
+const PokemonList: React.FC<Props> = ({  }) => {
 
     const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+    const [filteredPokemons, setFilteredPokemons] = useState<Pokemon[]>([]);
     const [shownPokemons, setShownPokemons] = useState<Pokemon[]>([]);
     const [pageQuantity, setPageQuantity] = useState<number>(0);
     const [pageCurrent, setPageCurrent] = useState<number>(1);
@@ -46,12 +51,13 @@ export default function PokemonList({  }) {
         let pokes = await getAllPokemonsByApi();
         setPageQuantity(Math.ceil(pokes.length / pokemonsPerScroll));
         setPokemons(pokes);
+        setFilteredPokemons(pokes);
         setLoading(false);
     };
 
     useEffect(() => {
         showMorePokemons()
-    }, [pokemons])
+    }, [filteredPokemons])
 
 
 
@@ -76,16 +82,24 @@ export default function PokemonList({  }) {
 
     function showMorePokemons(){
         setShownPokemons(oldPokemons => {
-            const pokemonsSlice = pokemons.slice(oldPokemons.length, oldPokemons.length + pokemonsPerScroll)
-            console.log(oldPokemons, pokemonsSlice, pokemons);
-            return [...oldPokemons, ...pokemonsSlice];
+            const initSlice = searchTerm ? 0 : oldPokemons.length;
+            const pokemonsSlice = filteredPokemons.slice(initSlice, initSlice + pokemonsPerScroll)
+            return [...(searchTerm ? [] : oldPokemons), ...pokemonsSlice];
         });
     }
 
     setTimeout(()=>{
-        console.log(1);
         //window.scrollTo({top: 3000})
     }, 3000)
+
+
+    const searchTerm = useSelector((s: {searchT: string}) => s.searchT);
+
+
+    useEffect(() => {
+        const pokemonsFiltered = pokemons.filter(pokemon => pokemon.name.toLowerCase().includes(searchTerm.toLowerCase()))
+        setFilteredPokemons(pokemonsFiltered);
+    }, [searchTerm])
 
     return (
         <>
@@ -120,3 +134,4 @@ export default function PokemonList({  }) {
         </>
     )
 }
+export default PokemonList;
