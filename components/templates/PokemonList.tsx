@@ -72,6 +72,9 @@ const PokemonList: React.FC<Props> = ({  }) => {
     }, [pokemonsPerScroll])
 
     useEffect(() => {
+        if(searchTerm !== "" && searchTerm){
+            handlePageChange(null, 1)
+        }
         filterPokemons(searchTerm);
     }, [searchTerm])
 
@@ -152,14 +155,17 @@ const PokemonList: React.FC<Props> = ({  }) => {
 
                 </>
             }
-            <Pagination sx={{...styles.pagination,
-                ...(theme.palette.primary.main === colors.redBright ? styles.paginationDark : styles.paginationLight )
-            }}
-                        variant="text"
-                        count={pageQuantity}
-                        page={pageCurrent}
-                        color="primary"
-                        onChange={handlePageChange}/>
+            {!searchTerm &&
+                <Pagination sx={{...styles.pagination,
+                    ...(theme.palette.primary.main === colors.redBright ? styles.paginationDark : styles.paginationLight )
+                }}
+                            variant="text"
+                            count={pageQuantity}
+                            page={pageCurrent}
+                            color="primary"
+                            onChange={handlePageChange}/>
+            }
+
 
 
         </>
