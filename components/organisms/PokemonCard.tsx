@@ -20,7 +20,7 @@ type Props = {
     isFirstOfPage?: boolean;
     isPage?: boolean;
     isCurrentlySearching?: boolean;
-    clickedOnPokemon: (pokeName: string) => void;
+    clickedOnPokemon?: (pokeName: string) => void;
 }
 
 const styles = {
@@ -96,7 +96,7 @@ const PokemonCard: React.FC<Props> = ({ pokemonName,
                                           isFirstOfPage = false,
                                           isPage = false,
                                           isCurrentlySearching = false,
-                                          clickedOnPokemon}) => {
+                                          clickedOnPokemon = null}) => {
 
     const [pokemonInfo, setPokemonInfo] = useState<Pokemon | null>();
     const [startedDelete, setStartedDelete] = useState<boolean>();
@@ -117,7 +117,7 @@ const PokemonCard: React.FC<Props> = ({ pokemonName,
             <GenTitle title={(getTitle(pokemonInfo.id, true) || getTitle(pokemonInfo.id, false) )}/>
         }
         <Grid key={pokemonName} item>
-            <Card onClick={() => { !isPage && clickedOnPokemon(pokemonName)}}
+            <Card onClick={() => { !isPage && clickedOnPokemon && clickedOnPokemon(pokemonName)}}
                 sx={{...styles.card, ...(isPage ? styles.pageCard: styles.clickeable)}}>
                 {pokemonInfo ?
                         <>
