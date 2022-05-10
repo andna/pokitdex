@@ -176,7 +176,7 @@ const Layout: React.FC<Props> = ( { children } ) => {
                             <></>
                             :
                             <Close style={styles.backer} onClick={() => {
-                                router.push("/")
+                                router.back()
                             }} />
                         }
 

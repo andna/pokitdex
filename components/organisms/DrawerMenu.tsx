@@ -5,7 +5,7 @@ import {
     AutoAwesome,
     CheckBoxOutlineBlank,
     ChevronLeft, ChevronRight,
-    DarkMode,
+    DarkMode, Home,
     Menu,
     QuestionAnswer,
     WbSunny
@@ -56,6 +56,15 @@ const DrawerMenu:React.FC<Props> = ({ isDarkMode, toggleDarkMode, isPage, pokeNa
 
 
     const MenuButtons = [
+        <Link href={'/'} key="button-home">
+            <ListItem button>
+                <ListItemIcon>
+                    <Home color="secondary"/>
+                </ListItemIcon>
+                <ListItemText primary="Home"/>
+            </ListItem>
+        </Link>,
+        <Divider  key="button-divider-1" />,
         <ListItem button onClick={()=> {toggleDarkMode()}} key="button-mode">
             <ListItemIcon color="secondary">
                 {isDarkMode ? <DarkMode  color="secondary"/> : <WbSunny  color="secondary"/>}
@@ -71,7 +80,7 @@ const DrawerMenu:React.FC<Props> = ({ isDarkMode, toggleDarkMode, isPage, pokeNa
             </ListItem>
         </Link>,
 
-        <Divider  key="button-divider" />,
+        <Divider  key="button-divider-2" />,
         <ListItem disabled  key="button-teams">
             <ListItemIcon>
                 <CheckBoxOutlineBlank   color="secondary"/>

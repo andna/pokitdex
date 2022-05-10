@@ -1,13 +1,15 @@
 import React, {useEffect, useState} from "react";
 import {Pokemon} from "../../types/Pokemon";
 import Loader from "../../components/atoms/loader";
-import {Grid, Pagination} from "@mui/material";
+import {Grid, Pagination, useTheme} from "@mui/material";
 import PokemonCard from "../../components/organisms/PokemonCard";
 import {useRouter} from "next/router";
 import {getAllPokemonsByApi} from "../../services/pokemonGetter";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {useSelector} from "react-redux";
 import GenTitle from "../atoms/GenTitle";
+import {inspect} from "util";
+import colors from "../atoms/colors";
 
 const styles = {
     grid: {
@@ -18,12 +20,16 @@ const styles = {
     pagination: {
         position: 'fixed',
         justifyContent: 'center',
-        background: '#2b1f2c',
-        height: 42,
+        height: 33,
         bottom: '5vh',
         borderRadius: 20,
         boxShadow: '0 3px 6px rgba(0,0,0,.25)',
-        display: 'none' as 'none'
+    },
+    paginationDark: {
+        backgroundColor: '#2b1f2c'
+    },
+    paginationLight: {
+        backgroundColor: '#ffeaea'
     }
 };
 
@@ -38,15 +44,19 @@ const resetPerScrollAmount = () => {
 
 const PokemonList: React.FC<Props> = ({  }) => {
 
+    const pokemonsPerPage = 27; //To achieve a personally chosen quantity of 42 pages.
     const [pageQuantity, setPageQuantity] = useState<number>(0);
     const [pageCurrent, setPageCurrent] = useState<number>(1);
-
+    const [pageOffsetIndexShown, setPageOffsetIndexShown] = useState<number>(0);
+    const [pageOffsetIndexShownEnd, setPageOffsetIndexShownEnd] = useState<number>(42);
     const [loading, setLoading] = useState<boolean>(true);
 
     const [pokemons, setPokemons] = useState<Pokemon[]>([]);
     const [pokemonsPerScroll, setPokemonsPerScroll] = useState<number>(0);
     const [filteredPokemons, setFilteredPokemons] = useState<Pokemon[]>([]);
     const [shownPokemons, setShownPokemons] = useState<Pokemon[]>([]);
+
+    const theme = useTheme();
 
     const searchTerm = useSelector((s: {searchT: string}) => s.searchT);
 
@@ -72,7 +82,7 @@ const PokemonList: React.FC<Props> = ({  }) => {
 
     const fetchPokemonList = async () => {
         let pokes = await getAllPokemonsByApi();
-        //setPageQuantity(Math.ceil(pokes.length / pokemonsPerScroll));
+        setPageQuantity(Math.ceil(pokes.length / pokemonsPerPage));
         setPokemons(pokes);
         filterPokemons(searchTerm, pokes);
         setLoading(false);
@@ -97,7 +107,7 @@ const PokemonList: React.FC<Props> = ({  }) => {
         setShownPokemons(slicedHeroes);
     }
 
-    /*
+
 
     const router = useRouter();
     useEffect(() => {
@@ -107,16 +117,18 @@ const PokemonList: React.FC<Props> = ({  }) => {
     }, [router.query.page])
 
     const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-        //window.scrollTo(0, 4000)
-        //changePage(value);
+        window.scrollTo(0, 0)
+        changePage(value);
     };
 
     const changePage = (toPage : number) => {
         setPageCurrent(toPage);
-        const pageOffsetIndex = (toPage - 1) * pokemonsPerScroll;
-        const pageOffsetIndexEnd = pageOffsetIndex + pokemonsPerScroll;
+        const pageOffsetIndex = (toPage - 1) * pokemonsPerPage;
+        const pageOffsetIndexEnd = pageOffsetIndex + pokemonsPerPage;
+        setPageOffsetIndexShown(pageOffsetIndex);
+        setPageOffsetIndexShownEnd(pageOffsetIndexEnd);
         router.push(`/?page=${toPage}`, undefined, { shallow: true })
-    }*/
+    }
 
     return (
         <>
@@ -128,32 +140,26 @@ const PokemonList: React.FC<Props> = ({  }) => {
                             title={`${filteredPokemons.length} result${filteredPokemons.length === 1 ? '' : 's'} 
                                     for '${searchTerm}'`}/>
                     }
-                    <InfiniteScroll
-                        dataLength={shownPokemons.length}
-                        next={showMorePokemons}
-                        hasMore={true}
-                        loader={""}
-                        scrollThreshold={0.8}
-                        style={{ overflow: "unset" }}
-                    >
-                        <Grid {...styles.grid}>
-                            {shownPokemons.map((pokemon: Pokemon, index: number) => (
-                                <PokemonCard pokemonName={pokemon.name}
-                                             isCurrentlySearching={searchTerm.length > 0}
-                                             isFirstOfPage={index === 0}
-                                             key={`${pokemon.name}-${index}`} />
-                            ))}
-                        </Grid>
-                    </InfiniteScroll>
+                    <Grid {...styles.grid}>
+                        {filteredPokemons && filteredPokemons.slice(pageOffsetIndexShown, pageOffsetIndexShownEnd)
+                            .map((pokemon: Pokemon, index: number) => (
+                            <PokemonCard pokemonName={pokemon.name}
+                                         isFirstOfPage={index === 0}
+                                         key={`${pokemon.name}-${index}`}
+                                         isCurrentlySearching={searchTerm.length > 0}/>
+                        ))}
+                    </Grid>
 
                 </>
             }
-            {/*
-            <Pagination sx={styles.pagination} count={pageQuantity}
+            <Pagination sx={{...styles.pagination,
+                ...(theme.palette.primary.main === colors.redBright ? styles.paginationDark : styles.paginationLight )
+            }}
+                        variant="text"
+                        count={pageQuantity}
                         page={pageCurrent}
                         color="primary"
                         onChange={handlePageChange}/>
-            */}
 
 
         </>
