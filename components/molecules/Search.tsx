@@ -12,15 +12,25 @@ const styles = {
         flex: 1,
         marginTop: 0.5,
         marginRight: 2,
+        '& .MuiInputBase-root':{
+            color: 'white',
+        },
+        '& .MuiFormLabel-root':{
+            color: 'white',
+        },
         '& .MuiInputBase-input':{
             height: 15,
         },
         '& .MuiOutlinedInput-notchedOutline':{
-            borderColor: 'rgba(255,255,255,.5)'
+            borderColor: 'rgba(255,255,255,.5)',
+        },
+        '&:hover .MuiOutlinedInput-notchedOutline':{
+            borderColor: 'rgba(255,255,255,1)',
         },
         '& .MuiFormLabel-root:not(.Mui-focused):not(.MuiFormLabel-filled)':{
-           transform: 'translate(14px, 13px) scale(1)'
+           transform: 'translate(14px, 13px) scale(1)',
         }
+        //.css-r0e94v-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline
     },
     box: {
         maxWidth: '50vw',

@@ -7,6 +7,7 @@ import {useRouter} from "next/router";
 import {getAllPokemonsByApi} from "../../services/pokemonGetter";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {useSelector} from "react-redux";
+import GenTitle from "../atoms/GenTitle";
 
 const styles = {
     grid: {
@@ -128,6 +129,11 @@ const PokemonList: React.FC<Props> = ({  }) => {
 
             {loading ? <Loader /> :
                 <>
+                    {searchTerm &&
+                        <GenTitle
+                            title={`${filteredPokemons.length} result${filteredPokemons.length === 1 ? '' : 's'} 
+                                    for '${searchTerm}'`}/>
+                    }
                     <InfiniteScroll
                         dataLength={shownPokemons.length}
                         next={showMorePokemons}

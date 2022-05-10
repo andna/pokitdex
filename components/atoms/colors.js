@@ -2,7 +2,7 @@ const colors = {
     appbarColor : '#b0bbf8',
     avatarBg: '#3c8ca9',
     footerColor: '#666',
-    blueBright: '#3f51b5',
+    redLight: '#b04d4d',
     blueDark: '#1f222c',
     bluePale: '#2a2e3d',
     redBright: '#7e3c52',

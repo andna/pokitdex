@@ -1,7 +1,8 @@
 import React, {useState} from "react";
 import { Avatar as AvatarMui} from "@mui/material";
-import colors from "../atoms/colors";
-import {Sprites} from "../../types/Pokemon";
+import colors from "../../atoms/colors";
+import {Sprites} from "../../../types/Pokemon";
+import cssStyles from './avatar.module.css'
 
 const styles = {
     avatar: {
@@ -13,7 +14,11 @@ const styles = {
         position: 'relative' as 'relative',
         left: '-20px',
         top: '-20px',
-        filter: 'drop-shadow(rgba(0,0,0,.3) 4px 8px 8px)'
+        filter: 'drop-shadow(rgba(0,0,0,.3) 4px 8px 8px)',
+        transition: '0.2s',
+        borderRadius: '4px',
+        background: 'rgba(255, 255, 255, 0)',
+        overflow: 'visible'
     },
     bigImage: {
         height: '400px',
@@ -51,8 +56,12 @@ const Avatar: React.FC<Props> = ({ pokemonName, sprites, isPage }) => {
             (front || frontShiny || official || frontHome || gen8)
     );
 
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
     return  <img
+        className={isLoading ? cssStyles['loading-image'] : ""}
         onError={() => { setImage(altImgForErrors)}}
+        onLoad={() => {setIsLoading(false)}}
         src={image ? image : altImgForErrors} alt={pokemonName}
         style={{...styles.image,
             ...(isPage ? styles.bigImage : null),

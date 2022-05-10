@@ -8,11 +8,12 @@ import Link from 'next/link'
 import {getTitle, loadPokemonByApi, deleteCustom} from "../../services/pokemonGetter";
 import Typing from "../molecules/Typing";
 import Naming from "../molecules/Naming";
-import Avatar from "../molecules/Avatar";
+import Avatar from "../molecules/Avatar/Avatar";
 import PokeIndex from "../atoms/PokeIndex";
 import {ChevronRight, Close, Delete, DeleteOutline} from "@mui/icons-material";
 import PageContent from "./PageContent";
 import {useRouter} from "next/router";
+import GenTitle from "../atoms/GenTitle";
 
 type Props = {
     pokemonName: string;
@@ -49,15 +50,6 @@ const styles = {
         alignItems: 'center',
         flex: 1,
         position: 'relative' as 'relative'
-    },
-    title: {
-        width: '100%',
-        background: 'linear-gradient(180deg, #ffffff33 1%, transparent 80%)',
-        borderRadius: '20px 20px 0 0',
-        textAlign: 'center',
-        padding: 2,
-        fontWeight: 800,
-        margin: '40px 0 15px 16px'
     },
     nameContainer: {
         flex: 1
@@ -119,11 +111,8 @@ const PokemonCard: React.FC<Props> = ({ pokemonName,
 
     return <>
         {!isCurrentlySearching && !isPage && pokemonInfo && (isFirstOfPage || getTitle(pokemonInfo.id, true)) &&
-        <Typography variant={'h6'}
-                    sx={styles.title}
-        >
-           { getTitle(pokemonInfo.id, true) || getTitle(pokemonInfo.id, false) }
-        </Typography>}
+            <GenTitle title={(getTitle(pokemonInfo.id, true) || getTitle(pokemonInfo.id, false) )}/>
+        }
         <Grid key={pokemonName} item>
 
             <Link href={isPage ? 'javascript:void(0)' : `/${pokemonName}`}>

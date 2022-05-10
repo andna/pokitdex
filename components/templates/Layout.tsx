@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 import {Theme} from "@mui/system";
 import {AppBar, CssBaseline, Typography, Container} from "@mui/material";
@@ -12,6 +12,7 @@ import {useRouter} from "next/router";
 import {changeDashForSpace} from "../../services/pokemonGetter";
 import {Add, Close} from "@mui/icons-material";
 import Search from "../molecules/Search";
+import DrawerMenu from "../organisms/DrawerMenu";
 
 type Props = {
     children?: React.ReactNode;
@@ -40,7 +41,7 @@ const themeDark : Theme = createTheme({
 const themeLight : Theme = createTheme({
     palette: {
         primary: {
-            main: colors.blueBright,
+            main: colors.redLight,
         },
         secondary: {
             main: colors.secondary,
@@ -117,6 +118,18 @@ const Layout: React.FC<Props> = ( { children } ) => {
 
     const [isDarkTheme, setIsDarkTheme] = useState<boolean>(true)
 
+    const toggleDarkTheme = () => {
+        localStorage.setItem('isDarkTheme', isDarkTheme ? 'false' : 'true')
+        setIsDarkTheme(!isDarkTheme);
+    }
+
+    useEffect(() => {
+        const localIsDark = localStorage.getItem('isDarkTheme');
+        if(localIsDark){
+            setIsDarkTheme(localIsDark === 'true');
+        }
+    }, [])
+
     return (<div>
 
         <Head>
@@ -151,6 +164,7 @@ const Layout: React.FC<Props> = ( { children } ) => {
                                 }
                         </Typography>
                         {isHome && <Search  />}
+                        <DrawerMenu isDarkMode={isDarkTheme} toggleDarkMode={toggleDarkTheme} />
 
                     </div>
                 </AppBar>
