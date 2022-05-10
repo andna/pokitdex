@@ -1,8 +1,6 @@
 import React, {useState} from "react";
-import { Avatar as AvatarMui} from "@mui/material";
 import colors from "../../atoms/colors";
 import {Sprites} from "../../../types/Pokemon";
-import cssStyles from './avatar.module.css'
 
 const styles = {
     avatar: {
@@ -16,15 +14,20 @@ const styles = {
         top: '-20px',
         filter: 'drop-shadow(rgba(0,0,0,.3) 4px 8px 8px)',
         transition: '0.2s',
-        borderRadius: '4px',
-        background: 'rgba(255, 255, 255, 0)',
-        overflow: 'visible'
+        background: 'radial-gradient(rgba(200, 200, 200, 0) 1%, transparent 67%)',
+        overflow: 'visible',
+
     },
     bigImage: {
         height: '400px',
         width:'400px',
         maxHeight: '45vw',
         maxWidth: '45vw',
+    },
+    loadingImage:{
+
+        background: 'radial-gradient(rgba(200, 200, 200, .2) 1%, transparent 67%)',
+
     },
     errorImage: {
         transform: 'scale(0.8)',
@@ -59,12 +62,12 @@ const Avatar: React.FC<Props> = ({ pokemonName, sprites, isPage }) => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     return  <img
-        className={isLoading ? cssStyles['loading-image'] : ""}
         onError={() => { setImage(altImgForErrors)}}
         onLoad={() => {setIsLoading(false)}}
         src={image ? image : altImgForErrors} alt={pokemonName}
         style={{...styles.image,
             ...(isPage ? styles.bigImage : null),
+            ...(isLoading ? styles.loadingImage : null),
             ...((!image || image === altImgForErrors) ? styles.errorImage : null)}}/>
 }
 

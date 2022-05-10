@@ -100,8 +100,9 @@ const PokemonCard: React.FC<Props> = ({ pokemonName,
     const [startedDelete, setStartedDelete] = useState<boolean>();
 
     useEffect(() => {
+        setPokemonInfo(null);
         fetchPokemonData();
-    }, [])
+    }, [pokemonName])
 
     const fetchPokemonData = async () => {
         setPokemonInfo(await loadPokemonByApi(pokemonName, isPage));
@@ -174,7 +175,7 @@ const PokemonCard: React.FC<Props> = ({ pokemonName,
                             </>
                     :
                         <div style={styles.pokemonSkeletonContainer}>
-                            <Skeleton variant="rectangular" width={'100%'} height={isPage ? 800 : 104} />
+                            <Skeleton variant="rectangular" width={'100%'} height={isPage ? 940 : 104} />
                             <p style={styles.pokemonSkeleton}>{pokemonName}</p>
                         </div>
 

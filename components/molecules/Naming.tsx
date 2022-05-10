@@ -18,7 +18,7 @@ const styles = {
         paddingLeft: 8
     },
     species: {
-        fontWeight: 800,
+        fontWeight: 700,
         lineHeight: 2,
         textTransform: 'capitalize'
     },

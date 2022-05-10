@@ -1,15 +1,36 @@
 import {Box, Button, Divider, Drawer, List, ListItem, ListItemIcon, ListItemText} from "@mui/material";
-import React from "react";
-import {Add, DarkMode, Menu, WbSunny} from "@mui/icons-material";
+import React, {useEffect, useState} from "react";
+import {
+    Add,
+    AutoAwesome,
+    CheckBoxOutlineBlank,
+    ChevronLeft, ChevronRight,
+    DarkMode,
+    Menu,
+    QuestionAnswer,
+    WbSunny
+} from "@mui/icons-material";
 import Link from "next/link";
+import {Simplex} from "../../types/Simplex";
+import {useRouter} from "next/router";
 
 type Props = {
     isDarkMode: boolean;
-    toggleDarkMode: () => void
+    toggleDarkMode: () => void;
+    isPage: boolean;
+    pokeName: string;
 }
 
+const styles = {
+    menuButton:{
+        color: 'white',
+        padding: 0,
+        minWidth: 30,
+        marginRight: '1vw'
+    }
+}
 
-const DrawerMenu:React.FC<Props> = ({ isDarkMode, toggleDarkMode }) => {
+const DrawerMenu:React.FC<Props> = ({ isDarkMode, toggleDarkMode, isPage, pokeName }) => {
 
     const [state, setState] = React.useState({
         top: false,
@@ -37,18 +58,38 @@ const DrawerMenu:React.FC<Props> = ({ isDarkMode, toggleDarkMode }) => {
     const MenuButtons = [
         <ListItem button onClick={()=> {toggleDarkMode()}}>
             <ListItemIcon color="secondary">
-                {isDarkMode ? <DarkMode /> : <WbSunny />}
+                {isDarkMode ? <DarkMode  color="secondary"/> : <WbSunny  color="secondary"/>}
             </ListItemIcon>
             <ListItemText primary={`Dark Mode ${isDarkMode ? 'Off' : 'On' }`} />
         </ListItem>,
         <Link href={'/add'}>
             <ListItem button>
                 <ListItemIcon>
-                    <Add />
+                    <Add color="secondary"/>
                 </ListItemIcon>
                 <ListItemText primary="Add Custom Poke" secondary="BETA"/>
             </ListItem>
         </Link>,
+
+        <Divider />,
+        <ListItem disabled>
+            <ListItemIcon>
+                <CheckBoxOutlineBlank   color="secondary"/>
+            </ListItemIcon>
+            <ListItemText primary="Favorites and Team" secondary="Soon"/>
+        </ListItem>,
+        <ListItem disabled>
+            <ListItemIcon>
+                <CheckBoxOutlineBlank  color="secondary"/>
+            </ListItemIcon>
+            <ListItemText primary="Type Matchups" secondary="Soon"/>
+        </ListItem>,
+        <ListItem disabled>
+            <ListItemIcon>
+                <CheckBoxOutlineBlank  color="secondary"/>
+            </ListItemIcon>
+            <ListItemText primary="Play Who's that?!" secondary="Soon"/>
+        </ListItem>,
     ];
 
     const list = () => (
@@ -68,11 +109,44 @@ const DrawerMenu:React.FC<Props> = ({ isDarkMode, toggleDarkMode }) => {
         </Box>
     );
 
+    const [localList, setLocalList] = useState<Simplex[]>([]);
+
+    useEffect(()=>{
+        const getlocalList = localStorage.getItem('pokemon-list');
+        if(getlocalList){
+            setLocalList(JSON.parse(getlocalList));
+        }
+    }, [])
+
+    const router = useRouter()
+    function navigateToOtherPage(toPrevious: boolean = false){
+        let index = localList.indexOf(localList.find(poke => poke.name === pokeName) as Simplex);
+        console.log(index, pokeName)
+        index += toPrevious ? -1 : 1;
+        if(index < 0){
+            index = localList.length - 1;
+        }
+        if(index >= localList.length){
+            index = 0;
+        }
+        router.push('/' + localList[index].name);
+    }
+
     return (
         <div>
             <>
-                <Button sx={{color: 'white', margin: '0 -10px 0 -20px'}} onClick={toggleDrawer( true)}>
-                    <Menu />
+                {isPage && localList && localList.length > 0 && <>
+                    <Button sx={styles.menuButton}
+                            onClick={()=> navigateToOtherPage( true)}>
+                        <ChevronLeft />
+                    </Button>
+                    <Button sx={styles.menuButton}
+                            onClick={()=> navigateToOtherPage()}>
+                        <ChevronRight />
+                    </Button>
+                    </>}
+                <Button sx={styles.menuButton}>
+                    <Menu onClick={toggleDrawer( true)}/>
                 </Button>
                 <Drawer
                     anchor={anchor}

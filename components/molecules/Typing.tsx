@@ -12,7 +12,7 @@ const styles = {
         fontSize: 10,
         fontFamily: 'system-ui',
         letterSpacing: '-0.3px',
-        fontWeight: 800,
+        fontWeight: 700,
         color: 'white'
     }
 }

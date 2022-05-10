@@ -11,7 +11,7 @@ const styles = {
         borderRadius: '20px 20px 0 0',
         textAlign: 'center',
         padding: 2,
-        fontWeight: 800,
+        fontWeight: 700,
         margin: '40px 8px 15px 24px',
         color: '#aa5b5b'
     },

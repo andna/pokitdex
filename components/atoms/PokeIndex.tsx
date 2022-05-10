@@ -5,7 +5,6 @@ const styles = {
     indexNumber: {
         fontWeight: 300,
         lineHeight: 0.1,
-        fontFamily: 'monospace',
         letterSpacing: '0.3em',
         position: 'absolute',
         left: 2,

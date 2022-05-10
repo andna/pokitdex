@@ -37,6 +37,9 @@ const themeDark : Theme = createTheme({
             secondary: colors.white,
         },
     },
+    typography: {
+        fontFamily: 'Jost, sans-serif'
+    }
 });
 const themeLight : Theme = createTheme({
     palette: {
@@ -53,6 +56,9 @@ const themeLight : Theme = createTheme({
             primary: colors.textLight,
         },
     },
+    typography: {
+        fontFamily: 'Jost, sans-serif'
+    }
 });
 
 
@@ -60,6 +66,16 @@ const styles = {
 
     logo:{
         filter:'drop-shadow(0px 3px 2px rgba(0,0,0,.3))',
+    },
+    appBarBackDark:{
+        backgroundColor: colors.redBright,
+        backgroundImage: `linear-gradient(45deg, ${colors.redBrightDarkAccent} 50%, ${colors.redBright} 50%);`,
+        backgroundSize: '10px 10px'
+    },
+    appBarBackLight:{
+        backgroundColor: colors.redLight,
+        backgroundImage: `linear-gradient(45deg, ${colors.redLightDarkAccent} 50%, ${colors.redLight} 50%);`,
+        backgroundSize: '10px 10px'
     },
     appbar: {
         padding: '8px',
@@ -69,14 +85,14 @@ const styles = {
         maxWidth: 1220,
         width: '100vw',
         margin: '0 auto',
-        alignItems: 'center' as 'center'
+        alignItems: 'center' as 'center',
     },
     content: {
         marginTop: 8,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        maxWidth: '2400px !important'
+        maxWidth: '2400px !important',
     },
     footer: {
         textAlign: 'center' as 'center',
@@ -103,6 +119,14 @@ const styles = {
         "&:hover": {
             opacity: 0.2
         }
+    },
+    webTitle:{
+        flexGrow: 1,
+        fontWeight: 700,
+        maxWidth: '48vw',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'pre',
+        overflow: 'hidden'
     }
 }
 
@@ -136,24 +160,28 @@ const Layout: React.FC<Props> = ( { children } ) => {
             <title>{isHome ? null : `${otherTitle.toUpperCase()} |`} {title}</title>
             <meta name="description" content="Andres Bastidas F - BlockChain.com Challenge" />
             <link rel="icon" href="/favicon.ico" />
+            <link rel="preconnect" href="https://fonts.googleapis.com" />
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
+                    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;700&display=swap"
+                          rel="stylesheet" />
         </Head>
 
         <main style={{maxWidth: 'inherit'}}>
             <ThemeProvider theme={isDarkTheme ? themeDark : themeLight}>
                 <CssBaseline />
-                <AppBar>
+                <AppBar sx={ isDarkTheme ? styles.appBarBackDark : styles.appBarBackLight}>
                     <div style={styles.appbar}>
                         {isHome
                             ?
                             <></>
                             :
                             <Close style={styles.backer} onClick={() => {
-                                router.back()
+                                router.push("/")
                             }} />
                         }
 
                         <img style={styles.logo} src="/pokitdex.svg" alt={title} width={40} height={24}/>
-                        <Typography component="div" sx={{ flexGrow: 1, fontWeight: 800 }}>
+                        <Typography component="div" sx={styles.webTitle}>
                             { isHome
                                 ?
                                 title
@@ -164,7 +192,10 @@ const Layout: React.FC<Props> = ( { children } ) => {
                                 }
                         </Typography>
                         {isHome && <Search  />}
-                        <DrawerMenu isDarkMode={isDarkTheme} toggleDarkMode={toggleDarkTheme} />
+                        <DrawerMenu isDarkMode={isDarkTheme}
+                                    isPage={!isHome}
+                                    pokeName={asPath.replace("/","")}
+                                    toggleDarkMode={toggleDarkTheme} />
 
                     </div>
                 </AppBar>

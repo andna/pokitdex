@@ -2,16 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d703db4c-8f9a-4e96-b567-0bf937ff21f8" name="Changes" comment="Changes">
-      <change afterPath="$PROJECT_DIR$/components/atoms/GenTitle.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/molecules/Avatar/avatar.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/organisms/DrawerMenu.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/atoms/GenTitle.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/atoms/GenTitle.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/atoms/PokeIndex.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/atoms/PokeIndex.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/atoms/colors.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/atoms/colors.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/molecules/Avatar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/molecules/Avatar/Avatar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/molecules/Search.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/molecules/Search.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/molecules/Avatar/Avatar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/molecules/Avatar/Avatar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/molecules/Naming.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/molecules/Naming.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/molecules/Typing.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/molecules/Typing.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/organisms/DrawerMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/organisms/DrawerMenu.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/organisms/PokemonCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/organisms/PokemonCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/templates/Layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/templates/Layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/templates/PokemonList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/templates/PokemonList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/[pid].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/[pid].tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/globals.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +82,7 @@
       <workItem from="1652051940047" duration="2089000" />
       <workItem from="1652085818607" duration="1144000" />
       <workItem from="1652087127755" duration="3137000" />
-      <workItem from="1652114670358" duration="25707000" />
+      <workItem from="1652114670358" duration="32660000" />
     </task>
     <servers />
   </component>
