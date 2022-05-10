@@ -57,7 +57,7 @@ const styles = {
         textAlign: 'center',
         padding: 2,
         fontWeight: 800,
-        margin: '40px 0 15px'
+        margin: '40px 0 15px 16px'
     },
     nameContainer: {
         flex: 1

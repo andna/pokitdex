@@ -10,11 +10,15 @@ const styles = {
     },
     input: {
         flex: 1,
+        marginTop: 0.5,
         marginRight: 2,
         '& .MuiInputBase-input':{
             height: 15,
         },
-        '& .MuiFormLabel-root:not(.Mui-focused):not(.Mui-filled)':{
+        '& .MuiOutlinedInput-notchedOutline':{
+            borderColor: 'rgba(255,255,255,.5)'
+        },
+        '& .MuiFormLabel-root:not(.Mui-focused):not(.MuiFormLabel-filled)':{
            transform: 'translate(14px, 13px) scale(1)'
         }
     },
@@ -62,7 +66,7 @@ const Search: React.FC<Props> = ({  }) => {
             <div style={styles.container}>
                 <TextField
                     id="outlined-basic"
-                    placeholder="by name"
+                    aria-label="Search Pokemon"
                     label="Search"
                     variant="outlined"
                     color="secondary"

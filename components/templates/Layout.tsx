@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 
 import {Theme} from "@mui/system";
 import {AppBar, CssBaseline, Typography, Container} from "@mui/material";
@@ -18,7 +18,7 @@ type Props = {
 }
 
 
-const theme : Theme = createTheme({
+const themeDark : Theme = createTheme({
     palette: {
         //type: 'dark',
         primary: {
@@ -34,6 +34,22 @@ const theme : Theme = createTheme({
         text: {
             primary: colors.white,
             secondary: colors.white,
+        },
+    },
+});
+const themeLight : Theme = createTheme({
+    palette: {
+        primary: {
+            main: colors.blueBright,
+        },
+        secondary: {
+            main: colors.secondary,
+        },
+        background: {
+            default: colors.lightGray,
+        },
+        text: {
+            primary: colors.textLight,
         },
     },
 });
@@ -99,6 +115,8 @@ const Layout: React.FC<Props> = ( { children } ) => {
     const isHome = (asPath === '/' || asPath.includes("page") );
     const otherTitle = changeDashForSpace(asPath.replace("/",""));
 
+    const [isDarkTheme, setIsDarkTheme] = useState<boolean>(true)
+
     return (<div>
 
         <Head>
@@ -108,7 +126,7 @@ const Layout: React.FC<Props> = ( { children } ) => {
         </Head>
 
         <main style={{maxWidth: 'inherit'}}>
-            <ThemeProvider theme={theme}>
+            <ThemeProvider theme={isDarkTheme ? themeDark : themeLight}>
                 <CssBaseline />
                 <AppBar>
                     <div style={styles.appbar}>
