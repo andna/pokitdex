@@ -115,7 +115,7 @@ const compare = (pokemonId: number, specificIndex: number, mustBeEqual: boolean)
     if (mustBeEqual) {
         return pokemonId === specificIndex;
     } else {
-        return pokemonId > specificIndex;
+        return pokemonId >= specificIndex;
     }
 }
 

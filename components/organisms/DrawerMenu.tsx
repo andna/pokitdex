@@ -121,7 +121,6 @@ const DrawerMenu:React.FC<Props> = ({ isDarkMode, toggleDarkMode, isPage, pokeNa
     const router = useRouter()
     function navigateToOtherPage(toPrevious: boolean = false){
         let index = localList.indexOf(localList.find(poke => poke.name === pokeName) as Simplex);
-        console.log(index, pokeName)
         index += toPrevious ? -1 : 1;
         if(index < 0){
             index = localList.length - 1;

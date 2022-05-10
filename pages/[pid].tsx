@@ -10,7 +10,6 @@ const PokemonPage = () => {
     const [loadedPokemon, setLoadedPokemon] = useState<boolean>(false);
 
     useEffect(()=>{
-        console.log(router)
         if(!router.isReady) return;
         setLoadedPokemon(true)
 
