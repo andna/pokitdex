@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from "react";
 import {Pokemon} from "../../types/Pokemon";
 import Loader from "../../components/atoms/loader";
-import {Grid, Pagination} from "@mui/material";
+import {Grid, Pagination, useTheme} from "@mui/material";
 import PokemonCard from "../../components/organisms/PokemonCard";
 import {useRouter} from "next/router";
 import {getAllPokemonsByApi} from "../../services/pokemonGetter";
 import InfiniteScroll from "react-infinite-scroll-component";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import GenTitle from "../atoms/GenTitle";
+import {reducersTypes} from "../../app/store";
 
 const styles = {
     grid: {
@@ -43,26 +44,31 @@ const PokemonList: React.FC<Props> = ({  }) => {
 
     const [loading, setLoading] = useState<boolean>(true);
 
-    const [pokemons, setPokemons] = useState<Pokemon[]>([]);
-    const [pokemonsPerScroll, setPokemonsPerScroll] = useState<number>(0);
-    const [filteredPokemons, setFilteredPokemons] = useState<Pokemon[]>([]);
-    const [shownPokemons, setShownPokemons] = useState<Pokemon[]>([]);
+    const searchTerm = useSelector((s: reducersTypes) => s.searchT);
+    const pokemons = useSelector((s: reducersTypes) => s.pokemons);
+    const filteredPokemons = useSelector((s: reducersTypes) => s.filteredPokemons);
+    const shownPokemons = useSelector((s: reducersTypes) => s.shownPokemons);
+    const pokemonsPerScroll = useSelector((s: reducersTypes) => s.pokemonsPerScroll);
+    const lastScrollY = useSelector((s: reducersTypes) => s.lastScrollY);
 
-    const searchTerm = useSelector((s: {searchT: string}) => s.searchT);
+    const dispatch = useDispatch();
+
+    const router = useRouter();
 
     useEffect(() => {
-        window.scrollTo(0, 0)
-        setPokemonsPerScroll(resetPerScrollAmount())
+        //console.log('aaa1',window.scrollY, lastScrollY);
+        //window.scrollTo({top: lastScrollY});
+        dispatch({ type: "SET_POKEMONS_PER_SCROLL", payload: resetPerScrollAmount() });
     }, [])
 
     useEffect(() => {
-        if(pokemonsPerScroll > 0 && pokemons.length === 0){
+        if(pokemonsPerScroll > 0){
             fetchPokemonList();
         }
     }, [pokemonsPerScroll])
 
     useEffect(() => {
-        filterPokemons(searchTerm);
+        filterPokemons(searchTerm, true);
     }, [searchTerm])
 
     useEffect(() => {
@@ -73,33 +79,44 @@ const PokemonList: React.FC<Props> = ({  }) => {
     const fetchPokemonList = async () => {
         let pokes = await getAllPokemonsByApi();
         //setPageQuantity(Math.ceil(pokes.length / pokemonsPerScroll));
-        setPokemons(pokes);
-        filterPokemons(searchTerm, pokes);
+
+        dispatch({ type: "SET_POKEMONS", payload: pokes });
+        filterPokemons(searchTerm, false, pokes);
         setLoading(false);
     };
 
     const showMorePokemons = () => {
-        setPokemonsPerScroll(resetPerScrollAmount())
-        setShownPokemons(oldShownPokemons => {
-            const heroesSlice = filteredPokemons.slice(oldShownPokemons.length, oldShownPokemons.length + pokemonsPerScroll)
-            return [...oldShownPokemons, ...heroesSlice];
-        });
+        dispatch({ type: "SET_POKEMONS_PER_SCROLL", payload: resetPerScrollAmount() });
+
+        const pokemonsSlice = filteredPokemons.slice(shownPokemons.length, shownPokemons.length + pokemonsPerScroll)
+        const newShownPokemons = [...shownPokemons, ...pokemonsSlice];
+        dispatch({ type: "SET_SHOWN_POKEMONS", payload: newShownPokemons });
     };
 
-    const filterPokemons = (filterString : string, pokes : Pokemon[] = pokemons) => {
+    const filterPokemons = (filterString : string, comesFromSearching: boolean, pokes : Pokemon[] = pokemons) => {
         const newFilteredPokemons = pokes.filter((pokemon: Pokemon) => {
             const enters = pokemon.name
                 .toLowerCase().includes(filterString.toLowerCase());
             return enters;
         });
-        setFilteredPokemons(newFilteredPokemons);
-        const slicedHeroes = newFilteredPokemons.slice(0, pokemonsPerScroll);
-        setShownPokemons(slicedHeroes);
+        dispatch({ type: "SET_FILTERED_POKEMONS", payload: newFilteredPokemons });
+        let slicePos = {init: 0, end: shownPokemons.length + pokemonsPerScroll};
+        if ( comesFromSearching){
+            slicePos = {init: 0, end: pokemonsPerScroll}
+        }
+
+        const slicedPokemons = newFilteredPokemons.slice(slicePos.init, slicePos.end);
+        dispatch({ type: "SET_SHOWN_POKEMONS", payload: slicedPokemons });
+    }
+
+    function clickedOnPokemon (pokeName: string){
+
+        dispatch({ type: "SET_LAST_SCROLL_Y", payload: window.scrollY });
+        router.push(`/${pokeName}`);
     }
 
     /*
 
-    const router = useRouter();
     useEffect(() => {
         if(router && router.query && router.query.page){
             changePage(parseInt(router.query.page as string));
@@ -134,6 +151,7 @@ const PokemonList: React.FC<Props> = ({  }) => {
                         hasMore={true}
                         loader={""}
                         scrollThreshold={0.8}
+                        initialScrollY={lastScrollY}
                         style={{ overflow: "unset" }}
                     >
                         <Grid {...styles.grid}>
@@ -141,6 +159,7 @@ const PokemonList: React.FC<Props> = ({  }) => {
                                 <PokemonCard pokemonName={pokemon.name}
                                              isCurrentlySearching={searchTerm.length > 0}
                                              isFirstOfPage={index === 0}
+                                             clickedOnPokemon={clickedOnPokemon}
                                              key={`${pokemon.name}-${index}`} />
                             ))}
                         </Grid>

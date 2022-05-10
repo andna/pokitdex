@@ -20,6 +20,7 @@ type Props = {
     isFirstOfPage?: boolean;
     isPage?: boolean;
     isCurrentlySearching?: boolean;
+    clickedOnPokemon: (pokeName: string) => void;
 }
 
 const styles = {
@@ -94,7 +95,8 @@ const styles = {
 const PokemonCard: React.FC<Props> = ({ pokemonName,
                                           isFirstOfPage = false,
                                           isPage = false,
-                                          isCurrentlySearching = false}) => {
+                                          isCurrentlySearching = false,
+                                          clickedOnPokemon}) => {
 
     const [pokemonInfo, setPokemonInfo] = useState<Pokemon | null>();
     const [startedDelete, setStartedDelete] = useState<boolean>();
@@ -115,73 +117,71 @@ const PokemonCard: React.FC<Props> = ({ pokemonName,
             <GenTitle title={(getTitle(pokemonInfo.id, true) || getTitle(pokemonInfo.id, false) )}/>
         }
         <Grid key={pokemonName} item>
-
-            <Link href={isPage ? 'javascript:void(0)' : `/${pokemonName}`}>
-                <Card sx={{...styles.card, ...(isPage ? styles.pageCard: styles.clickeable)}}>
-                    {pokemonInfo ?
-                            <>
-                                <CardContent sx={styles.externalPadding}>
-                                    <div style={styles.cardContent}>
-                                        <div>
-                                            <Avatar pokemonName={pokemonName}
-                                                    isPage={isPage}
-                                                    sprites={pokemonInfo?.sprites} />
-                                            <PokeIndex pokemonIndex={pokemonInfo.id}
-                                                       isPage={isPage} />
-                                        </div>
-                                        <div style={styles.nameContainer}>
-                                            <Naming pokemon={pokemonInfo}/>
-                                            <div>
-                                                {pokemonInfo?.types?.map((type : Type) => {
-                                                    return <Typing key={type.slot} typing={type}/>
-                                                })}
-                                            </div>
-                                            {isPage &&
-                                                <Typography  variant={'caption'} sx={{opacity: 0.5}}>
-                                                    <b>{ getTitle(pokemonInfo.id) }</b> group.
-                                                </Typography>
-                                            }
-                                        </div>
-                                        {!isPage && <ChevronRight/>}
+            <Card onClick={() => { !isPage && clickedOnPokemon(pokemonName)}}
+                sx={{...styles.card, ...(isPage ? styles.pageCard: styles.clickeable)}}>
+                {pokemonInfo ?
+                        <>
+                            <CardContent sx={styles.externalPadding}>
+                                <div style={styles.cardContent}>
+                                    <div>
+                                        <Avatar pokemonName={pokemonName}
+                                                isPage={isPage}
+                                                sprites={pokemonInfo?.sprites} />
+                                        <PokeIndex pokemonIndex={pokemonInfo.id}
+                                                   isPage={isPage} />
                                     </div>
-
-                                    {isPage && <div style={styles.internalPadding}>
-                                        {pokemonInfo.id < 0 &&
-                                        <div style={styles.deleterContainer}>
-                                            {startedDelete ? <>
-                                                    <Tooltip title="Are you sure about Deleting them?">
-                                                       <Delete sx={styles.deleters} onClick={() => {
-                                                           router.push('/');
-                                                           deleteCustom(pokemonName);
-                                                       }}/>
-                                                    </Tooltip>
-                                                    <span>¿Confirm Delete?</span>
-                                                    <Tooltip title="Don't delete">
-                                                        <Close sx={styles.deleters} onClick={() => setStartedDelete(false)}/>
-                                                    </Tooltip>
-                                                </>
-                                                :
-                                                <Tooltip title="Delete this hero?">
-                                                    <> Delete Custom <DeleteOutline sx={styles.deleters} onClick={() => setStartedDelete(true)}/></>
-                                                </Tooltip>
-                                            }
+                                    <div style={styles.nameContainer}>
+                                        <Naming pokemon={pokemonInfo}/>
+                                        <div>
+                                            {pokemonInfo?.types?.map((type : Type) => {
+                                                return <Typing key={type.slot} typing={type}/>
+                                            })}
                                         </div>
+                                        {isPage &&
+                                            <Typography  variant={'caption'} sx={{opacity: 0.5}}>
+                                                <b>{ getTitle(pokemonInfo.id) }</b> group.
+                                            </Typography>
                                         }
-                                        <PageContent pokemon={pokemonInfo}/>
-                                    </div>}
-                                </CardContent>
+                                    </div>
+                                    {!isPage && <ChevronRight/>}
+                                </div>
+
+                                {isPage && <div style={styles.internalPadding}>
+                                    {pokemonInfo.id < 0 &&
+                                    <div style={styles.deleterContainer}>
+                                        {startedDelete ? <>
+                                                <Tooltip title="Are you sure about Deleting them?">
+                                                   <Delete sx={styles.deleters} onClick={() => {
+                                                       router.push('/');
+                                                       deleteCustom(pokemonName);
+                                                   }}/>
+                                                </Tooltip>
+                                                <span>¿Confirm Delete?</span>
+                                                <Tooltip title="Don't delete">
+                                                    <Close sx={styles.deleters} onClick={() => setStartedDelete(false)}/>
+                                                </Tooltip>
+                                            </>
+                                            :
+                                            <Tooltip title="Delete this hero?">
+                                                <> Delete Custom <DeleteOutline sx={styles.deleters} onClick={() => setStartedDelete(true)}/></>
+                                            </Tooltip>
+                                        }
+                                    </div>
+                                    }
+                                    <PageContent pokemon={pokemonInfo}/>
+                                </div>}
+                            </CardContent>
 
 
-                            </>
-                    :
-                        <div style={styles.pokemonSkeletonContainer}>
-                            <Skeleton variant="rectangular" width={'100%'} height={isPage ? 940 : 104} />
-                            <p style={styles.pokemonSkeleton}>{pokemonName}</p>
-                        </div>
+                        </>
+                :
+                    <div style={styles.pokemonSkeletonContainer}>
+                        <Skeleton variant="rectangular" width={'100%'} height={isPage ? 940 : 104} />
+                        <p style={styles.pokemonSkeleton}>{pokemonName}</p>
+                    </div>
 
-                    }
-                </Card>
-            </Link>
+                }
+            </Card>
         </Grid>
     </>
 }
