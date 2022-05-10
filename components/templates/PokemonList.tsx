@@ -31,46 +31,80 @@ type Props = {
 }
 
 
+const resetPerScrollAmount = () => {
+    const avgCardSize = { w: 360, h: 100 };
+    return Math.ceil((window.innerWidth / avgCardSize.w) * (window.innerHeight / avgCardSize.h));
+}
+
 const PokemonList: React.FC<Props> = ({  }) => {
+
+    const [pageQuantity, setPageQuantity] = useState<number>(0);
+    const [pageCurrent, setPageCurrent] = useState<number>(1);
+
+    const [loading, setLoading] = useState<boolean>(true);
 
     const [pokemons, setPokemons] = useState<Pokemon[]>([]);
     const [pokemonsPerScroll, setPokemonsPerScroll] = useState<number>(0);
     const [filteredPokemons, setFilteredPokemons] = useState<Pokemon[]>([]);
     const [shownPokemons, setShownPokemons] = useState<Pokemon[]>([]);
-    const [pageQuantity, setPageQuantity] = useState<number>(0);
-    const [pageCurrent, setPageCurrent] = useState<number>(1);
-    const [loading, setLoading] = useState<boolean>(true);
 
-    const router = useRouter();
+    const searchTerm = useSelector((s: {searchT: string}) => s.searchT);
 
     useEffect(() => {
         window.scrollTo(0, 0)
-        resetPerScrollAmount()
+        setPokemonsPerScroll(resetPerScrollAmount())
     }, [])
+
     useEffect(() => {
         if(pokemonsPerScroll > 0 && pokemons.length === 0){
             fetchPokemonList();
         }
     }, [pokemonsPerScroll])
 
-    const resetPerScrollAmount = () => {
-        const avgCardSize = { w: 360, h: 100 };
-        setPokemonsPerScroll(Math.ceil((window.innerWidth / avgCardSize.w) * (window.innerHeight / avgCardSize.h)));
-    }
-
-    const fetchPokemonList = async () => {
-        let pokes = await getAllPokemonsByApi();
-        setPageQuantity(Math.ceil(pokes.length / pokemonsPerScroll));
-        setPokemons(pokes);
-        filterPokemons(searchTerm, pokes);
-        setLoading(false);
-    };
+    useEffect(() => {
+        filterPokemons(searchTerm);
+    }, [searchTerm])
 
     useEffect(() => {
         showMorePokemons()
     }, [filteredPokemons])
 
 
+    const fetchPokemonList = async () => {
+        let pokes = await getAllPokemonsByApi();
+        //setPageQuantity(Math.ceil(pokes.length / pokemonsPerScroll));
+        setPokemons(pokes);
+        filterPokemons(searchTerm, pokes);
+        setLoading(false);
+    };
+
+    const showMorePokemons = () => {
+        setPokemonsPerScroll(resetPerScrollAmount())
+        setShownPokemons(oldShownPokemons => {
+            const heroesSlice = filteredPokemons.slice(oldShownPokemons.length, oldShownPokemons.length + pokemonsPerScroll)
+            return [...oldShownPokemons, ...heroesSlice];
+        });
+    };
+
+    const filterPokemons = (filterString : string, pokes : Pokemon[] = pokemons) => {
+        const newFilteredPokemons = pokes.filter((pokemon: Pokemon) => {
+            const enters = pokemon.name
+                .toLowerCase().includes(filterString.toLowerCase());
+            return enters;
+        });
+        setFilteredPokemons(newFilteredPokemons);
+        const slicedHeroes = newFilteredPokemons.slice(0, pokemonsPerScroll);
+        setShownPokemons(slicedHeroes);
+    }
+
+    /*
+
+    const router = useRouter();
+    useEffect(() => {
+        if(router && router.query && router.query.page){
+            changePage(parseInt(router.query.page as string));
+        }
+    }, [router.query.page])
 
     const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
         //window.scrollTo(0, 4000)
@@ -82,47 +116,7 @@ const PokemonList: React.FC<Props> = ({  }) => {
         const pageOffsetIndex = (toPage - 1) * pokemonsPerScroll;
         const pageOffsetIndexEnd = pageOffsetIndex + pokemonsPerScroll;
         router.push(`/?page=${toPage}`, undefined, { shallow: true })
-    }
-
-    useEffect(() => {
-        if(router && router.query && router.query.page){
-            changePage(parseInt(router.query.page as string));
-        }
-    }, [router.query.page])
-
-    const showMorePokemons = () => {
-        resetPerScrollAmount();
-        setShownPokemons(oldShownPokemons => {
-            const heroesSlice = filteredPokemons.slice(oldShownPokemons.length, oldShownPokemons.length + pokemonsPerScroll)
-            return [...oldShownPokemons, ...heroesSlice];
-        });
-    };
-
-    const filterPokemons = (filterString : string, pokes : Pokemon[] = pokemons) => {
-
-        const newFilteredPokemons = pokes.filter((pokemon: Pokemon) => {
-            const enters = pokemon.name
-                .toLowerCase().includes(filterString.toLowerCase());
-            return enters;
-        });
-        setFilteredPokemons(newFilteredPokemons);
-        const slicedHeroes = newFilteredPokemons.slice(0, pokemonsPerScroll);
-        setShownPokemons(slicedHeroes);
-        //setNoHeroFound(newFilteredPokemons.length === 0)
-    }
-
-
-    setTimeout(()=>{
-        //window.scrollTo({top: 3000})
-    }, 3000)
-
-
-    const searchTerm = useSelector((s: {searchT: string}) => s.searchT);
-
-
-    useEffect(() => {
-        filterPokemons(searchTerm);
-    }, [searchTerm])
+    }*/
 
     return (
         <>
@@ -154,10 +148,12 @@ const PokemonList: React.FC<Props> = ({  }) => {
 
                 </>
             }
+            {/*
             <Pagination sx={styles.pagination} count={pageQuantity}
                         page={pageCurrent}
                         color="primary"
                         onChange={handlePageChange}/>
+            */}
 
 
         </>
