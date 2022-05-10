@@ -56,13 +56,13 @@ const DrawerMenu:React.FC<Props> = ({ isDarkMode, toggleDarkMode, isPage, pokeNa
 
 
     const MenuButtons = [
-        <ListItem button onClick={()=> {toggleDarkMode()}}>
+        <ListItem button onClick={()=> {toggleDarkMode()}} key="button-mode">
             <ListItemIcon color="secondary">
                 {isDarkMode ? <DarkMode  color="secondary"/> : <WbSunny  color="secondary"/>}
             </ListItemIcon>
             <ListItemText primary={`Dark Mode ${isDarkMode ? 'Off' : 'On' }`} />
         </ListItem>,
-        <Link href={'/add'}>
+        <Link href={'/add'} key="button-add">
             <ListItem button>
                 <ListItemIcon>
                     <Add color="secondary"/>
@@ -71,20 +71,20 @@ const DrawerMenu:React.FC<Props> = ({ isDarkMode, toggleDarkMode, isPage, pokeNa
             </ListItem>
         </Link>,
 
-        <Divider />,
-        <ListItem disabled>
+        <Divider  key="button-divider" />,
+        <ListItem disabled  key="button-teams">
             <ListItemIcon>
                 <CheckBoxOutlineBlank   color="secondary"/>
             </ListItemIcon>
             <ListItemText primary="Favorites and Team" secondary="Soon"/>
         </ListItem>,
-        <ListItem disabled>
+        <ListItem disabled  key="button-types">
             <ListItemIcon>
                 <CheckBoxOutlineBlank  color="secondary"/>
             </ListItemIcon>
             <ListItemText primary="Type Matchups" secondary="Soon"/>
         </ListItem>,
-        <ListItem disabled>
+        <ListItem disabled  key="button-play">
             <ListItemIcon>
                 <CheckBoxOutlineBlank  color="secondary"/>
             </ListItemIcon>
@@ -100,11 +100,7 @@ const DrawerMenu:React.FC<Props> = ({ isDarkMode, toggleDarkMode, isPage, pokeNa
             onClick={toggleDrawer(false)}
         >
             <List>
-                {MenuButtons.map((button, index) => (
-                   <React.Fragment key={index}>
-                       {button}
-                   </React.Fragment>
-                ))}
+                {MenuButtons.map((button, index) => button)}
             </List>
         </Box>
     );
