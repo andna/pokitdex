@@ -77,6 +77,10 @@ const styles = {
         backgroundImage: `linear-gradient(45deg, ${colors.redLightDarkAccent} 50%, ${colors.redLight} 50%);`,
         backgroundSize: '10px 10px'
     },
+    flex:{
+        display: 'flex',
+        alignItems: 'center' as 'center',
+    },
     appbar: {
         padding: '8px',
         display: 'flex',
@@ -86,6 +90,7 @@ const styles = {
         width: '100vw',
         margin: '0 auto',
         alignItems: 'center' as 'center',
+        justifyContent: 'space-between'
     },
     content: {
         marginTop: 8,
@@ -171,31 +176,36 @@ const Layout: React.FC<Props> = ( { children } ) => {
                 <CssBaseline />
                 <AppBar sx={ isDarkTheme ? styles.appBarBackDark : styles.appBarBackLight}>
                     <div style={styles.appbar}>
-                        {isHome
-                            ?
-                            <></>
-                            :
-                            <Close style={styles.backer} onClick={() => {
-                                router.back()
-                            }} />
-                        }
-
-                        <img style={styles.logo} src="/pokitdex.svg" alt={title} width={40} height={24}/>
-                        <Typography component="div" sx={styles.webTitle}>
-                            { isHome
+                        <div style={styles.flex}>
+                            {isHome
                                 ?
-                                title
+                                <></>
                                 :
-                                <span style={{textTransform: 'capitalize'}}>
+                                <Close style={styles.backer} onClick={() => {
+                                    router.back()
+                                }} />
+                            }
+
+                            <img style={styles.logo} src="/pokitdex.svg" alt={title} width={40} height={24}/>
+                            <Typography component="div" sx={styles.webTitle}>
+                                { isHome
+                                    ?
+                                    title
+                                    :
+                                    <span style={{textTransform: 'capitalize'}}>
                                     {otherTitle}
                                 </span>
                                 }
-                        </Typography>
-                        {isHome && <Search  />}
-                        <DrawerMenu isDarkMode={isDarkTheme}
-                                    isPage={!isHome}
-                                    pokeName={asPath.replace("/","")}
-                                    toggleDarkMode={toggleDarkTheme} />
+                            </Typography>
+                        </div>
+
+                        <div style={styles.flex}>
+                            {isHome && <Search  />}
+                            <DrawerMenu isDarkMode={isDarkTheme}
+                                        isPage={!isHome}
+                                        pokeName={asPath.replace("/","")}
+                                        toggleDarkMode={toggleDarkTheme} />
+                        </div>
 
                     </div>
                 </AppBar>
