@@ -128,7 +128,7 @@ const styles = {
     webTitle:{
         flexGrow: 1,
         fontWeight: 700,
-        maxWidth: '48vw',
+        maxWidth: '42vw',
         textOverflow: 'ellipsis',
         whiteSpace: 'pre',
         overflow: 'hidden'
