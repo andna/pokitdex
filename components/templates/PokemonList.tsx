@@ -119,7 +119,7 @@ const PokemonList: React.FC<Props> = ({  }) => {
         }
     }, [router.query.page])
 
-    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    const handlePageChange = (event: React.ChangeEvent<unknown> | null, value: number) => {
         window.scrollTo(0, 0)
         changePage(value);
     };
