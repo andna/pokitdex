@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {Pokemon} from "../../types/Pokemon";
 import Loader from "../../components/atoms/loader";
-import {Grid, Pagination, useTheme} from "@mui/material";
+import {useTheme} from "@mui/material";
 import PokemonCard from "../../components/organisms/PokemonCard";
 import {useRouter} from "next/router";
 import {getAllPokemonsByApi} from "../../services/pokemonGetter";
-import InfiniteScroll from "react-infinite-scroll-component";
+
 import {useSelector} from "react-redux";
 import GenTitle from "../atoms/GenTitle";
 import colors from "../atoms/colors";

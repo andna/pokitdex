@@ -1,16 +1,15 @@
 import React, {useEffect, useState} from "react";
 
 import {Theme} from "@mui/system";
-import {AppBar, CssBaseline, Typography, Container} from "@mui/material";
+import {CssBaseline} from "@mui/material";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import colors from "../atoms/colors";
 
-import Link from 'next/link'
 import Head from 'next/head';
 import {useRouter} from "next/router";
 import {changeDashForSpace} from "../../services/pokemonGetter";
-import {Add, Close} from "@mui/icons-material";
+
 import Search from "../molecules/Search";
 import DrawerMenu from "../organisms/DrawerMenu";
 import {styles} from "./StylesTemplates";

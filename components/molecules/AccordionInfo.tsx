@@ -1,6 +1,6 @@
 import React from "react";
 import {AbilityObject, Move, Stat, VersionGroupDetail} from "../../types/Pokemon";
-import {Accordion, AccordionDetails, AccordionSummary} from "@mui/material";
+import {AccordionDetails} from "@mui/material";
 import {ExpandMore} from "@mui/icons-material";
 
 import LiStat from "../atoms/LiStat";

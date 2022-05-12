@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {Pokemon} from "../../types/Pokemon";
-import {Typography} from "@mui/material";
 import {changeDashForSpace} from "../../services/pokemonGetter";
 import {styles} from "./StylesMolecules";
 

@@ -1,5 +1,4 @@
-import React, {useState} from "react";
-import {Box, InputAdornment, TextField, useTheme} from "@mui/material";
+import React from "react";
 import {Search as SearchIcon, Close} from "@mui/icons-material";
 import { useSelector, useDispatch } from 'react-redux';
 import {styles} from "./StylesMolecules";

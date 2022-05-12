@@ -1,4 +1,4 @@
-import {Box, Button, Divider, Drawer, List, ListItem, ListItemIcon, ListItemText} from "@mui/material";
+import {Divider, Drawer, List, ListItem, ListItemIcon, ListItemText} from "@mui/material";
 import React, {useEffect, useState} from "react";
 import {
     Add,
