@@ -13,6 +13,7 @@ import {changeDashForSpace} from "../../services/pokemonGetter";
 import {Add, Close} from "@mui/icons-material";
 import Search from "../molecules/Search";
 import DrawerMenu from "../organisms/DrawerMenu";
+import {styles} from "./StylesTemplates";
 
 type Props = {
     children?: React.ReactNode;
@@ -62,80 +63,10 @@ const themeLight : Theme = createTheme({
 });
 
 
-const styles = {
-
-    logo:{
-        filter:'drop-shadow(0px 3px 2px rgba(0,0,0,.3))',
-    },
-    appBarBackDark:{
-        backgroundColor: colors.redBright,
-        backgroundImage: `linear-gradient(45deg, ${colors.redBrightDarkAccent} 50%, ${colors.redBright} 50%);`,
-        backgroundSize: '10px 10px'
-    },
-    appBarBackLight:{
-        backgroundColor: colors.redLight,
-        backgroundImage: `linear-gradient(45deg, ${colors.redLightDarkAccent} 50%, ${colors.redLight} 50%);`,
-        backgroundSize: '10px 10px'
-    },
-    flex:{
-        display: 'flex',
-        alignItems: 'center' as 'center',
-    },
-    appbar: {
-        padding: '8px',
-        display: 'flex',
-        fontSize: '0.8em',
-        userSelect: 'none' as 'none',
-        maxWidth: 1220,
-        width: '100vw',
-        margin: '0 auto',
-        alignItems: 'center' as 'center',
-        justifyContent: 'space-between'
-    },
-    content: {
-        marginTop: 8,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        maxWidth: '2400px !important',
-    },
-    footer: {
-        textAlign: 'center' as 'center',
-        zIndex: -1,
-        bottom: 0,
-        width: '100%',
-        fontSize: '0.6em',
-        display: 'block',
-        marginTop: 100,
-        color: colors.footerColor,
-    },
-    backer: {
-        cursor: 'pointer',
-        paddingRight: 2,
-        marginRight: 4
-    },
-    adder: {
-        cursor: 'pointer',
-        paddingRight: 2,
-        marginRight: 60,
-        display: 'flex',
-        alignItems: 'center',
-        opacity: 0.8,
-        "&:hover": {
-            opacity: 0.2
-        }
-    },
-    webTitle:{
-        flexGrow: 1,
-        fontWeight: 700,
-        maxWidth: '42vw',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'pre',
-        overflow: 'hidden'
-    }
-}
 
 const title : string = 'Pok\'it Dex';
+
+const styled = styles.Layout;
 
 const Layout: React.FC<Props> = ( { children } ) => {
 
@@ -159,6 +90,8 @@ const Layout: React.FC<Props> = ( { children } ) => {
         }
     }, [])
 
+    const StyledAppBar = styled.AppBar(isDarkTheme);
+
     return (<div>
 
         <Head>
@@ -171,59 +104,56 @@ const Layout: React.FC<Props> = ( { children } ) => {
                           rel="stylesheet" />
         </Head>
 
-        <main style={{maxWidth: 'inherit'}}>
+        <styled.Main>
             <ThemeProvider theme={isDarkTheme ? themeDark : themeLight}>
                 <CssBaseline />
-                <AppBar sx={ isDarkTheme ? styles.appBarBackDark : styles.appBarBackLight}>
-                    <div style={styles.appbar}>
-                        <div style={styles.flex}>
+                <StyledAppBar>
+                    <styled.AppBarContent>
+                        <styled.AppBarInner>
                             {isHome
                                 ?
                                 <></>
                                 :
-                                <Close style={styles.backer} onClick={() => {
+                                <styled.Close onClick={() => {
                                     router.back()
                                 }} />
                             }
 
-                            <img style={styles.logo} src="/pokitdex.svg" alt={title} width={40} height={24}/>
-                            <Typography component="div" sx={styles.webTitle}>
+                            <styled.Logo src="/pokitdex.svg" alt={title} width={40} height={24}/>
+                            <styled.WebTitle>
                                 { isHome
                                     ?
                                     title
                                     :
-                                    <span style={{textTransform: 'capitalize'}}>
-                                    {otherTitle}
-                                </span>
+                                    <>{otherTitle}</>
                                 }
-                            </Typography>
-                        </div>
+                            </styled.WebTitle>
+                        </styled.AppBarInner>
 
-                        <div style={styles.flex}>
+                        <styled.HeaderRightSide>
                             {isHome && <Search  />}
                             <DrawerMenu isDarkMode={isDarkTheme}
                                         isPage={!isHome}
                                         pokeName={asPath.replace("/","")}
                                         toggleDarkMode={toggleDarkTheme} />
-                        </div>
+                        </styled.HeaderRightSide>
 
-                    </div>
-                </AppBar>
-                <Container component="main" sx={styles.content}>
+                    </styled.AppBarContent>
+                </StyledAppBar>
+                <styled.Container>
                     {children}
-                </Container>
+                </styled.Container>
             </ThemeProvider>
-        </main>
+        </styled.Main>
 
         <footer>
-            <a
+            <styled.Fotter
                 href="https://github.com/andna/pokitdex"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={styles.footer}
             >
                 By Andres Bastidas Fierro @ 2022
-            </a>
+            </styled.Fotter>
         </footer>
     </div>)
 }

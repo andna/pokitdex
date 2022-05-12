@@ -14,9 +14,9 @@ const LiAbility: React.FC<Props> = ({ data }) => {
         <styled.Ability>
             {changeDashForSpace(data.ability.name)}
         </styled.Ability>
-        <small style={{ opacity: 0.5 }}><small>
+        <styled.isHidden><small>
             {data.is_hidden && ' Is Hidden'}
-        </small></small>
+        </small></styled.isHidden>
     </li>
 }
 

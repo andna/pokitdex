@@ -44,7 +44,8 @@ export const styles = {
         `,
     },
     LiAbility: {
-        Ability: styled("span")`${capitalize}`
+        Ability: styled("span")`${capitalize}`,
+        isHidden: styled("small")`opacity:0.5`,
     },
     LiStat: {
         StatName: styled("span")`${capitalize}`,

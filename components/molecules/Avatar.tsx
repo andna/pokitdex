@@ -30,8 +30,7 @@ const Avatar: React.FC<Props> = ({ pokemonName, sprites, isPage }) => {
 
     const StyledImg = styles.Avatar.Img({
         isBig: isPage,
-        isLoading: isLoading,
-        isError: (!image || image === altImgForErrors)});
+        isLoading: isLoading});
 
     return  <StyledImg
         onError={() => { setImage(altImgForErrors)}}

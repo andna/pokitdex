@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import { Pokemon, Type } from "../../types/Pokemon";
-import {Card, CardContent, Grid, Typography, Skeleton, Tooltip,
+import {Grid, Typography, Skeleton, Tooltip,
 } from "@mui/material";
-import {ChevronRight, Close, Delete, DeleteOutline} from "@mui/icons-material";
+import {ChevronRight} from "@mui/icons-material";
 import Link from 'next/link'
 import {getTitle, loadPokemonByApi, deleteCustom} from "../../services/pokemonGetter";
 import Typing from "../molecules/Typing";
@@ -21,56 +21,6 @@ type Props = {
     isCurrentlySearching?: boolean;
 }
 
-const styles2 = {
-    externalPadding: {
-        padding: '0.1em !important',
-    },
-    internalPadding: {
-        padding: '1em',
-    },
-    cardContent: {
-        display: 'flex',
-        alignItems: 'center',
-        flex: 1,
-        position: 'relative' as 'relative'
-    },
-    nameContainer: {
-        flex: 1
-    },
-    chevron: {
-        justifySelf: 'center'
-    },
-    pageContent: {
-        width: '100%'
-    },
-    deleters: {
-        marginRight: 1,
-        cursor: 'pointer'
-    },
-    deleterContainer: {
-        opacity: 0.6,
-        fontSize: 14,
-        display: 'flex',
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-        margin: '-10px 0 15px',
-        color: '#eb7272'
-    },
-    pokemonSkeletonContainer:{
-        position: 'relative' as 'relative'
-
-    },
-    pokemonSkeleton: {
-        position: 'absolute' as 'absolute',
-        width: '100%',
-        textAlign: 'center' as 'center',
-        zIndex: 1,
-        textTransform: 'capitalize' as 'capitalize',
-        bottom: 'calc(50% - 20px)',
-        fontWeight: 300,
-        fontSize: '70%'
-    }
-}
 
 const styled = styles.PokemonCard;
 
@@ -108,8 +58,8 @@ const PokemonCard: React.FC<Props> = ({ pokemonName,
                     onMouseLeave={() => setHoveringCard(false)}>
                     {pokemonInfo ?
                             <>
-                                <CardContent sx={styles2.externalPadding}>
-                                    <div style={styles2.cardContent}>
+                                <styled.ExternalPadding>
+                                    <styled.CardContent>
                                         <div>
                                             <Avatar pokemonName={pokemonName}
                                                     isPage={isPage}
@@ -117,7 +67,7 @@ const PokemonCard: React.FC<Props> = ({ pokemonName,
                                             <PokeIndex pokemonIndex={pokemonInfo.id}
                                                        isPage={isPage} />
                                         </div>
-                                        <div style={styles2.nameContainer}>
+                                        <styled.NameContainer>
                                             <Naming pokemon={pokemonInfo}/>
                                             <div>
                                                 {pokemonInfo?.types?.map((type : Type) => {
@@ -129,43 +79,43 @@ const PokemonCard: React.FC<Props> = ({ pokemonName,
                                                     <b>{ getTitle(pokemonInfo.id) }</b> group.
                                                 </Typography>
                                             }
-                                        </div>
+                                        </styled.NameContainer>
                                         {!isPage && <ChevronRight/>}
-                                    </div>
+                                    </styled.CardContent>
 
-                                    {isPage && <div style={styles2.internalPadding}>
+                                    {isPage && <styled.InternalPadding>
                                         {pokemonInfo.id < 0 &&
-                                        <div style={styles2.deleterContainer}>
+                                        <styled.deleterContainer>
                                             {startedDelete ? <>
                                                     <Tooltip title="Are you sure about Deleting them?">
-                                                       <Delete sx={styles2.deleters} onClick={() => {
+                                                       <styled.Delete onClick={() => {
                                                            router.push('/');
                                                            deleteCustom(pokemonName);
                                                        }}/>
                                                     </Tooltip>
                                                     <span>¿Confirm Delete?</span>
                                                     <Tooltip title="Don't delete">
-                                                        <Close sx={styles2.deleters} onClick={() => setStartedDelete(false)}/>
+                                                        <styled.Close onClick={() => setStartedDelete(false)}/>
                                                     </Tooltip>
                                                 </>
                                                 :
                                                 <Tooltip title="Delete this hero?">
-                                                    <> Delete Custom <DeleteOutline sx={styles2.deleters} onClick={() => setStartedDelete(true)}/></>
+                                                    <> Delete Custom <styled.DeleteOutline onClick={() => setStartedDelete(true)}/></>
                                                 </Tooltip>
                                             }
-                                        </div>
+                                        </styled.deleterContainer>
                                         }
                                         <PageContent pokemon={pokemonInfo}/>
-                                    </div>}
-                                </CardContent>
+                                    </styled.InternalPadding>}
+                                </styled.ExternalPadding>
 
 
                             </>
                     :
-                        <div style={styles2.pokemonSkeletonContainer}>
+                        <styled.SkeletonContainer>
                             <Skeleton variant="rectangular" width={'100%'} height={isPage ? 940 : 104} />
-                            <p style={styles2.pokemonSkeleton}>{pokemonName}</p>
-                        </div>
+                            <styled.Skeleton>{pokemonName}</styled.Skeleton>
+                        </styled.SkeletonContainer>
 
                     }
                 </StyledCard>

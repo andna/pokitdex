@@ -8,30 +8,9 @@ import {getAllPokemonsByApi} from "../../services/pokemonGetter";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {useSelector} from "react-redux";
 import GenTitle from "../atoms/GenTitle";
-import {inspect} from "util";
 import colors from "../atoms/colors";
+import {styles} from "./StylesTemplates";
 
-const styles = {
-    grid: {
-    container:true,
-    justifyContent: "center",
-    spacing: 2
-    },
-    pagination: {
-        position: 'fixed',
-        justifyContent: 'center',
-        height: 33,
-        bottom: '5vh',
-        borderRadius: 20,
-        boxShadow: '0 3px 6px rgba(0,0,0,.25)',
-    },
-    paginationDark: {
-        backgroundColor: '#2b1f2c'
-    },
-    paginationLight: {
-        backgroundColor: '#ffeaea'
-    }
-};
 
 type Props = {
 }
@@ -41,6 +20,8 @@ const resetPerScrollAmount = () => {
     const avgCardSize = { w: 360, h: 100 };
     return Math.ceil((window.innerWidth / avgCardSize.w) * (window.innerHeight / avgCardSize.h));
 }
+
+const styled = styles.PokemonList;
 
 const PokemonList: React.FC<Props> = ({  }) => {
 
@@ -59,6 +40,8 @@ const PokemonList: React.FC<Props> = ({  }) => {
     const theme = useTheme();
 
     const searchTerm = useSelector((s: {searchT: string}) => s.searchT);
+
+    const StyledPagination = styled.Pagination(theme.palette.primary.main === colors.redBright);
 
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -143,7 +126,7 @@ const PokemonList: React.FC<Props> = ({  }) => {
                             title={`${filteredPokemons.length} result${filteredPokemons.length === 1 ? '' : 's'} 
                                     for '${searchTerm}'`}/>
                     }
-                    <Grid {...styles.grid}>
+                    <styled.Grid spacing={2} container>
                         {filteredPokemons && filteredPokemons.slice(pageOffsetIndexShown, pageOffsetIndexShownEnd)
                             .map((pokemon: Pokemon, index: number) => (
                             <PokemonCard pokemonName={pokemon.name}
@@ -151,14 +134,12 @@ const PokemonList: React.FC<Props> = ({  }) => {
                                          key={`${pokemon.name}-${index}`}
                                          isCurrentlySearching={searchTerm.length > 0}/>
                         ))}
-                    </Grid>
+                    </styled.Grid>
 
                 </>
             }
             {!searchTerm &&
-                <Pagination sx={{...styles.pagination,
-                    ...(theme.palette.primary.main === colors.redBright ? styles.paginationDark : styles.paginationLight )
-                }}
+                <StyledPagination
                             variant="text"
                             count={pageQuantity}
                             page={pageCurrent}

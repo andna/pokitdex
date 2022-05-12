@@ -99,7 +99,7 @@ export const styles = {
         `,
     },
     Avatar: {
-        Img: (options:{isBig: boolean, isLoading: boolean, isError: boolean}) => styled("img")`
+        Img: (options:{isBig: boolean, isLoading: boolean}) => styled("img")`
           height: 96px;
           width: 96px;
           position: relative;
@@ -116,9 +116,6 @@ export const styles = {
                 max-width: 45vw;
             `}
           ${options.isLoading && `
-               background: radial-gradient(rgba(200, 200, 200, .2) 1%, transparent 67%)
-            `}
-          ${options.isError && `
                background: radial-gradient(rgba(200, 200, 200, .2) 1%, transparent 67%)
             `}
         `
