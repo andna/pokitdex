@@ -4,24 +4,8 @@ import {changeDashForSpace} from "../../services/pokemonGetter";
 import {Bolt, Favorite, PanToolOutlined, ShieldMoon, ShieldOutlined, Speed} from "@mui/icons-material";
 import colors from "../atoms/colors";
 
-const styles = {
-    b:{
-        width: 42,
-        display: 'inline-block'
-    },
-    li:{
-        display: 'block'
-    },
-    capitalize: {
-        textTransform: 'capitalize' as 'capitalize',
-    },
-    statIcon: {
-        margin: '0 10px 0 -12px',
-        position: 'relative' as 'relative',
-        top: 6,
+import {styles} from "./StylesAtoms";
 
-    },
-}
 type Props = {
     data: Stat;
 }
@@ -37,23 +21,27 @@ const icons : any = {
     speed: {color: icolors.speed, icon: <Speed />}
 };
 
+const styled = styles.LiStat;
+
 const LiStat: React.FC<Props> = ({ data }) => {
 
-    return<li key={data.stat.name} style={styles.li}>
-        <span style={{...styles.statIcon,
-            ...{color: icons[data.stat.name].color}}}>
+    const StyledStatIcon = styled.StatIcon(icons[data.stat.name].color)
+    const StyledEffort = styled.Effort(data.effort > 0)
+
+    return<styled.List key={data.stat.name}>
+        <StyledStatIcon>
             {icons[data.stat.name].icon}
-        </span>
-        <b style={styles.b}>{data.base_stat} </b>
-        <span style={styles.capitalize}>
+        </StyledStatIcon>
+        <styled.BaseStat>{data.base_stat} </styled.BaseStat>
+        <styled.StatName>
             {changeDashForSpace(data.stat.name)}
-        </span>
-        <small style={
-            data.effort > 0 ? { opacity: 0.6 } : { opacity: 0.1 }
-        }><small>
-            {` Effort: ${data.effort}`}
-        </small></small>
-    </li>
+        </styled.StatName>
+        <StyledEffort>
+            <small>
+                {` Effort: ${data.effort}`}
+            </small>
+        </StyledEffort>
+    </styled.List>
 }
 
 export default LiStat;

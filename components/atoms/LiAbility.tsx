@@ -1,23 +1,19 @@
 import React from "react";
 import {AbilityObject} from "../../types/Pokemon";
-import colors from "../atoms/colors";
 import {changeDashForSpace} from "../../services/pokemonGetter";
+import {styles} from "./StylesAtoms";
 
-const styles = {
-    capitalize: {
-        textTransform: 'capitalize' as 'capitalize',
-    },
-}
 type Props = {
     data: AbilityObject;
 }
+const styled = styles.LiAbility;
 
 const LiAbility: React.FC<Props> = ({ data }) => {
-
     return <li key={data.ability.name}>
-        <span style={styles.capitalize}>
+
+        <styled.Ability>
             {changeDashForSpace(data.ability.name)}
-        </span>
+        </styled.Ability>
         <small style={{ opacity: 0.5 }}><small>
             {data.is_hidden && ' Is Hidden'}
         </small></small>

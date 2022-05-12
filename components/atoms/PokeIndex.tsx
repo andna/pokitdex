@@ -1,26 +1,6 @@
 import React from "react";
-import { Typography } from "@mui/material";
+import {styles} from "./StylesAtoms";
 
-const styles = {
-    indexNumber: {
-        fontWeight: 300,
-        lineHeight: 0.1,
-        letterSpacing: '0.3em',
-        position: 'absolute',
-        left: 2,
-        bottom: 8,
-        opacity: .5,
-        padding: 1
-    },
-    indexNumberPage: {
-        left: 'initial',
-        bottom: 'initial',
-        top: '4.2vw'
-    },
-    identifier: {
-        letterSpacing: 0
-    }
-}
 type Props = {
     pokemonIndex: number;
     isPage: boolean;
@@ -31,22 +11,26 @@ const myformat = new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 0
 });
 
+
 const numberWhereFormsStart = 10000;
 
+const styled = styles.PokeIndex;
+
 const PokeIndex: React.FC<Props> = ({ pokemonIndex, isPage = false }) => {
-    return <Typography variant={'caption'}
-                           sx={{...styles.indexNumber,
-                               ...(isPage ? styles.indexNumberPage : null)}}>
+
+    const StyledIndexNumber = styled.IndexNumber(isPage);
+
+    return <StyledIndexNumber variant={'caption'}>
 
         {pokemonIndex < 0 ?
             <>
-                <span style={styles.identifier}>Custom </span>
+                <styled.Identifier>Custom </styled.Identifier>
                 #{Math.abs(pokemonIndex)}
             </>
             :
             (pokemonIndex > numberWhereFormsStart ?
                 <>
-                    <span style={styles.identifier}>Form </span>
+                    <styled.Identifier>Form </styled.Identifier>
                     #{myformat.format(pokemonIndex - numberWhereFormsStart)}
                 </>
                 :
@@ -54,7 +38,7 @@ const PokeIndex: React.FC<Props> = ({ pokemonIndex, isPage = false }) => {
             )
         }
 
-    </Typography>
+    </StyledIndexNumber>
 }
 
 export default PokeIndex;

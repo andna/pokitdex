@@ -171,13 +171,13 @@ export const addPokemon = (pokemonFormValues: any) => {
         typesToAdd.push({slot: 2, type: {name: pokemonFormValues.type2}});
     }
     const abilitiesToAdd : AbilityObject[] = [
-        {slot: 0, ability: {name: pokemonFormValues.ability1}, is_hidden: false}
+        {slot: 0, Ability: {name: pokemonFormValues.ability1}, is_hidden: false}
     ];
     if(pokemonFormValues.ability2){
-        abilitiesToAdd.push({slot: 1, ability: {name: pokemonFormValues.ability2}, is_hidden: false})
+        abilitiesToAdd.push({slot: 1, Ability: {name: pokemonFormValues.ability2}, is_hidden: false})
     }
     if(pokemonFormValues.abilityHidden){
-        abilitiesToAdd.push({slot: 2, ability: {name: pokemonFormValues.abilityHidden}, is_hidden: true})
+        abilitiesToAdd.push({slot: 2, Ability: {name: pokemonFormValues.abilityHidden}, is_hidden: true})
     }
 
     const newPokemon : Pokemon = {

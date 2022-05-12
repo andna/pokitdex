@@ -1,39 +1,31 @@
 import React from "react";
-import {Type, VersionGroupDetail} from "../../types/Pokemon";
-import {
-    Chip
-} from "@mui/material";
-import colors from "../atoms/colors";
+import {VersionGroupDetail} from "../../types/Pokemon";
 import {changeDashForSpace} from "../../services/pokemonGetter";
+import {styles} from "./StylesAtoms";
 
-const styles = {
-    capitalize: {
-        textTransform: 'capitalize' as 'capitalize',
-    },
-    miniInfo: { opacity: 0.5 },
-}
 type Props = {
     data: VersionGroupDetail;
 }
 
+const styled = styles.LiVersionMove;
 const LiVersionMove: React.FC<Props> = ({ data }) => {
 
     return <li key={data.version_group.name + data.level_learned_at + data.move_learn_method.name}>
         <small><small>
-           <span style={styles.capitalize}>
+           <styled.LearnedIn>
                Learned In {changeDashForSpace(data.version_group.name)}
-           </span>
+           </styled.LearnedIn>
             <br />
-            <span style={styles.miniInfo}>
+            <styled.MiniInfo>
                 by {data.level_learned_at > 0
                 ?
                 <>reaching level <b>{data.level_learned_at}</b></>
                 :
-                <b style={styles.capitalize}>
+                <styled.Name>
                     {data.move_learn_method.name}
-                </b>
+                </styled.Name>
                 }
-            </span>
+            </styled.MiniInfo>
         </small></small>
     </li>
 }
