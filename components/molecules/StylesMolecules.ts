@@ -56,8 +56,8 @@ export const styles = {
         `,
         TextField: styled(TextField)({
             flex: 1,
-            marginTop: 0.5,
-            marginRight: 2,
+            marginTop: '4px',
+            marginRight: '16px',
             '& .MuiInputBase-root':{
                 color: 'white',
             },

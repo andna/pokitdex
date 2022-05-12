@@ -1,19 +1,18 @@
 import React, {useEffect, useState} from "react";
 import { Pokemon, Type } from "../../types/Pokemon";
-import {
-    Card,
-    CardContent, Grid, Typography, Skeleton, Tooltip,
+import {Card, CardContent, Grid, Typography, Skeleton, Tooltip,
 } from "@mui/material";
+import {ChevronRight, Close, Delete, DeleteOutline} from "@mui/icons-material";
 import Link from 'next/link'
 import {getTitle, loadPokemonByApi, deleteCustom} from "../../services/pokemonGetter";
 import Typing from "../molecules/Typing";
 import Naming from "../molecules/Naming";
 import Avatar from "../molecules/Avatar";
 import PokeIndex from "../atoms/PokeIndex";
-import {ChevronRight, Close, Delete, DeleteOutline} from "@mui/icons-material";
 import PageContent from "./PageContent";
 import {useRouter} from "next/router";
 import GenTitle from "../atoms/GenTitle";
+import {styles} from "./StylesOrganisms";
 
 type Props = {
     pokemonName: string;
@@ -22,23 +21,7 @@ type Props = {
     isCurrentlySearching?: boolean;
 }
 
-const styles = {
-    card: {
-        width: 345,
-        marginBottom: 2,
-        overflow: 'unset',
-        position: 'relative' as 'relative'
-    },
-    pageCard:{
-        width: 800,
-        maxWidth: 'calc(100vw - 42px)',
-    },
-    clickeable: {
-        cursor: 'pointer !important',
-        "&:hover": {
-            filter: 'brightness(1.1)'
-        }
-    },
+const styles2 = {
     externalPadding: {
         padding: '0.1em !important',
     },
@@ -89,13 +72,14 @@ const styles = {
     }
 }
 
-
+const styled = styles.PokemonCard;
 
 const PokemonCard: React.FC<Props> = ({ pokemonName,
                                           isFirstOfPage = false,
                                           isPage = false,
                                           isCurrentlySearching = false}) => {
 
+    const [hoveringCard, setHoveringCard] = useState<boolean>(false);
     const [pokemonInfo, setPokemonInfo] = useState<Pokemon | null>();
     const [startedDelete, setStartedDelete] = useState<boolean>();
 
@@ -110,6 +94,8 @@ const PokemonCard: React.FC<Props> = ({ pokemonName,
 
     const router = useRouter();
 
+    const StyledCard = styled.Card({isPage: isPage, isHovered: hoveringCard})
+
     return <>
         {!isCurrentlySearching && !isPage && pokemonInfo && (isFirstOfPage || getTitle(pokemonInfo.id, true)) &&
             <GenTitle title={(getTitle(pokemonInfo.id, true) || getTitle(pokemonInfo.id, false) )}/>
@@ -117,11 +103,13 @@ const PokemonCard: React.FC<Props> = ({ pokemonName,
         <Grid key={pokemonName} item>
 
             <Link href={isPage ? 'javascript:void(0)' : `/${pokemonName}`}>
-                <Card sx={{...styles.card, ...(isPage ? styles.pageCard: styles.clickeable)}}>
+                <StyledCard
+                    onMouseEnter={() => setHoveringCard(true)}
+                    onMouseLeave={() => setHoveringCard(false)}>
                     {pokemonInfo ?
                             <>
-                                <CardContent sx={styles.externalPadding}>
-                                    <div style={styles.cardContent}>
+                                <CardContent sx={styles2.externalPadding}>
+                                    <div style={styles2.cardContent}>
                                         <div>
                                             <Avatar pokemonName={pokemonName}
                                                     isPage={isPage}
@@ -129,7 +117,7 @@ const PokemonCard: React.FC<Props> = ({ pokemonName,
                                             <PokeIndex pokemonIndex={pokemonInfo.id}
                                                        isPage={isPage} />
                                         </div>
-                                        <div style={styles.nameContainer}>
+                                        <div style={styles2.nameContainer}>
                                             <Naming pokemon={pokemonInfo}/>
                                             <div>
                                                 {pokemonInfo?.types?.map((type : Type) => {
@@ -145,24 +133,24 @@ const PokemonCard: React.FC<Props> = ({ pokemonName,
                                         {!isPage && <ChevronRight/>}
                                     </div>
 
-                                    {isPage && <div style={styles.internalPadding}>
+                                    {isPage && <div style={styles2.internalPadding}>
                                         {pokemonInfo.id < 0 &&
-                                        <div style={styles.deleterContainer}>
+                                        <div style={styles2.deleterContainer}>
                                             {startedDelete ? <>
                                                     <Tooltip title="Are you sure about Deleting them?">
-                                                       <Delete sx={styles.deleters} onClick={() => {
+                                                       <Delete sx={styles2.deleters} onClick={() => {
                                                            router.push('/');
                                                            deleteCustom(pokemonName);
                                                        }}/>
                                                     </Tooltip>
                                                     <span>¿Confirm Delete?</span>
                                                     <Tooltip title="Don't delete">
-                                                        <Close sx={styles.deleters} onClick={() => setStartedDelete(false)}/>
+                                                        <Close sx={styles2.deleters} onClick={() => setStartedDelete(false)}/>
                                                     </Tooltip>
                                                 </>
                                                 :
                                                 <Tooltip title="Delete this hero?">
-                                                    <> Delete Custom <DeleteOutline sx={styles.deleters} onClick={() => setStartedDelete(true)}/></>
+                                                    <> Delete Custom <DeleteOutline sx={styles2.deleters} onClick={() => setStartedDelete(true)}/></>
                                                 </Tooltip>
                                             }
                                         </div>
@@ -174,13 +162,13 @@ const PokemonCard: React.FC<Props> = ({ pokemonName,
 
                             </>
                     :
-                        <div style={styles.pokemonSkeletonContainer}>
+                        <div style={styles2.pokemonSkeletonContainer}>
                             <Skeleton variant="rectangular" width={'100%'} height={isPage ? 940 : 104} />
-                            <p style={styles.pokemonSkeleton}>{pokemonName}</p>
+                            <p style={styles2.pokemonSkeleton}>{pokemonName}</p>
                         </div>
 
                     }
-                </Card>
+                </StyledCard>
             </Link>
         </Grid>
     </>

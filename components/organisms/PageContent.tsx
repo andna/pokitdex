@@ -1,18 +1,15 @@
-import React, {useState} from "react";
+import React from "react";
 import {Pokemon } from "../../types/Pokemon";
 import {Grid} from "@mui/material";
 import {Api, BarChart, Egg, Foundation, Height, Scale} from "@mui/icons-material";
 import AccordionInfo from "../molecules/AccordionInfo";
+import {styles} from "./StylesOrganisms";
 
-const styles = {
-    simpleIcon: {
-        position: 'relative' as 'relative',
-        top: 6
-    }
-}
 type Props = {
     pokemon: Pokemon;
 }
+
+const styled = styles.PageContent;
 
 const PageContent: React.FC<Props> = ({ pokemon }) => {
 
@@ -26,7 +23,7 @@ const PageContent: React.FC<Props> = ({ pokemon }) => {
     return <div>
         <Grid container spacing={2} justifyContent="center">
             {simpleData.map(info => <Grid key={info.name} item>
-                <span style={styles.simpleIcon}>{info.icon} </span>
+                <styled.SimpleIcon>{info.icon} </styled.SimpleIcon>
                 <b>{info.name}: </b>
                 {info.value} {info.suffix}
                 </Grid>)

@@ -2,15 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d703db4c-8f9a-4e96-b567-0bf937ff21f8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/components/molecules/StylesMolecules.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/organisms/StylesOrganisms.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/molecules/AccordionInfo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/molecules/AccordionInfo.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/molecules/Avatar/Avatar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/molecules/Avatar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/molecules/Avatar/avatar.module.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/molecules/Naming.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/molecules/Naming.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/molecules/Search.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/molecules/Search.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/molecules/Typing.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/molecules/Typing.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/molecules/StylesMolecules.ts" beforeDir="false" afterPath="$PROJECT_DIR$/components/molecules/StylesMolecules.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/organisms/DrawerMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/organisms/DrawerMenu.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/organisms/PageContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/organisms/PageContent.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/organisms/PokemonCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/organisms/PokemonCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,7 +83,7 @@
       <workItem from="1652114670358" duration="39423000" />
       <workItem from="1652168154854" duration="2461000" />
       <workItem from="1652191311372" duration="1642000" />
-      <workItem from="1652340629191" duration="13418000" />
+      <workItem from="1652340629191" duration="15183000" />
     </task>
     <servers />
   </component>

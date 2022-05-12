@@ -2,17 +2,16 @@ import {Box, Button, Divider, Drawer, List, ListItem, ListItemIcon, ListItemText
 import React, {useEffect, useState} from "react";
 import {
     Add,
-    AutoAwesome,
     CheckBoxOutlineBlank,
     ChevronLeft, ChevronRight,
     DarkMode, Home,
     Menu,
-    QuestionAnswer,
     WbSunny
 } from "@mui/icons-material";
 import Link from "next/link";
 import {Simplex} from "../../types/Simplex";
 import {useRouter} from "next/router";
+import {styles} from "./StylesOrganisms";
 
 type Props = {
     isDarkMode: boolean;
@@ -21,14 +20,7 @@ type Props = {
     pokeName: string;
 }
 
-const styles = {
-    menuButton:{
-        color: 'white',
-        padding: 0,
-        minWidth: 30,
-        marginRight: '1vw'
-    }
-}
+const styled = styles.DrawerMenu;
 
 const DrawerMenu:React.FC<Props> = ({ isDarkMode, toggleDarkMode, isPage, pokeName }) => {
 
@@ -102,8 +94,7 @@ const DrawerMenu:React.FC<Props> = ({ isDarkMode, toggleDarkMode, isPage, pokeNa
     ];
 
     const list = () => (
-        <Box
-            sx={{ width: 250 }}
+        <styled.MenuButton
             role="presentation"
             onKeyDown={toggleDrawer(false)}
             onClick={toggleDrawer(false)}
@@ -111,7 +102,7 @@ const DrawerMenu:React.FC<Props> = ({ isDarkMode, toggleDarkMode, isPage, pokeNa
             <List>
                 {MenuButtons.map((button, index) => button)}
             </List>
-        </Box>
+        </styled.MenuButton>
     );
 
     const [localList, setLocalList] = useState<Simplex[]>([]);
@@ -140,18 +131,18 @@ const DrawerMenu:React.FC<Props> = ({ isDarkMode, toggleDarkMode, isPage, pokeNa
         <div>
             <>
                 {isPage && localList && localList.length > 0 && <>
-                    <Button sx={styles.menuButton}
+                    <styled.MenuButton
                             onClick={()=> navigateToOtherPage( true)}>
                         <ChevronLeft />
-                    </Button>
-                    <Button sx={styles.menuButton}
+                    </styled.MenuButton>
+                    <styled.MenuButton
                             onClick={()=> navigateToOtherPage()}>
                         <ChevronRight />
-                    </Button>
+                    </styled.MenuButton>
                     </>}
-                <Button sx={styles.menuButton}>
+                <styled.MenuButton >
                     <Menu onClick={toggleDrawer( true)}/>
-                </Button>
+                </styled.MenuButton>
                 <Drawer
                     anchor={anchor}
                     open={state[anchor]}
