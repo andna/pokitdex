@@ -8,7 +8,7 @@ import Link from 'next/link'
 import {getTitle, loadPokemonByApi, deleteCustom} from "../../services/pokemonGetter";
 import Typing from "../molecules/Typing";
 import Naming from "../molecules/Naming";
-import Avatar from "../molecules/Avatar/Avatar";
+import Avatar from "../molecules/Avatar";
 import PokeIndex from "../atoms/PokeIndex";
 import {ChevronRight, Close, Delete, DeleteOutline} from "@mui/icons-material";
 import PageContent from "./PageContent";

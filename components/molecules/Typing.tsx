@@ -1,32 +1,18 @@
 import React from "react";
 import {Type} from "../../types/Pokemon";
-import {
-    Chip
-} from "@mui/material";
 import colors from "../atoms/colors";
+import {styles} from "./StylesMolecules";
 
-const styles = {
-    chip: {
-        textTransform: 'uppercase',
-        marginRight: 1,
-        fontSize: 10,
-        fontFamily: 'system-ui',
-        letterSpacing: '-0.3px',
-        fontWeight: 700,
-        color: 'white'
-    }
-}
 type Props = {
     typing: Type;
 }
 
 const Typing: React.FC<Props> = ({ typing }) => {
 
-    const typeColors : any = colors.types;
+    const typeColors : any = colors.types
+    const StyledChip = styles.Typing.Chip(typeColors[typing.type.name] );;
 
-    return <Chip
-                sx={{...styles.chip, background: typeColors[typing.type.name] }}
-                label={typing.type.name} />
+    return <StyledChip label={typing.type.name} />
 }
 
 export default Typing;

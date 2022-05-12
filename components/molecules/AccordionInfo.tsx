@@ -1,44 +1,13 @@
 import React from "react";
 import {AbilityObject, Move, Stat, VersionGroupDetail} from "../../types/Pokemon";
 import {Accordion, AccordionDetails, AccordionSummary} from "@mui/material";
-import {styled} from "@mui/material/styles";
 import {ExpandMore} from "@mui/icons-material";
 
 import LiStat from "../atoms/LiStat";
 import LiAbility from "../atoms/LiAbility";
 import LiVersionMove from "../atoms/LiVersionMove";
 import {changeDashForSpace} from "../../services/pokemonGetter";
-
-const styles = {
-    capitalize: {
-        textTransform: 'capitalize' as 'capitalize',
-    },
-    miniInfo: { opacity: 0.5 },
-    ul: {
-        paddingInlineStart: 20,
-    }
-}
-
-const AccordionRoot = styled(Accordion)({
-    margin: "16px 0",
-    boxShadow: "0px 3px 6px 1px rgba(0,0,0,0.15)",
-
-    "&:before": {
-        backgroundColor: "unset",
-    },
-});
-
-const AccordionSummaryContainer = styled(AccordionSummary)({
-    padding: "0 24px",
-    "& .MuiAccordionSummary-content": {
-        margin: "10px 0 !important", // Avoid change of sizing on expanded
-    },
-    "& .MuiAccordionSummary-expandIconWrapper": {
-        color: 'white',
-    },
-});
-
-
+import {styles} from "./StylesMolecules";
 
 type Props = {
     icon?: React.ReactNode;
@@ -46,6 +15,8 @@ type Props = {
     title: string;
     startsExpanded?: boolean;
 }
+
+const styled = styles.AccordionInfo;
 
 const AccordionInfo: React.FC<Props> = ({ startsExpanded = false,
                                             icon = null,
@@ -58,27 +29,27 @@ const AccordionInfo: React.FC<Props> = ({ startsExpanded = false,
         setExpanded(isExpanded ? panel : false);
     };
 
-    return  <AccordionRoot
+    return  <styled.AccordionRoot
         elevation={3}
         disabled={info && info.length === 0}
         expanded={expanded === title}
         onChange={handleChange(title)}
     >
-        <AccordionSummaryContainer expandIcon={<ExpandMore />}>
+        <styled.AccordionSummaryContainer expandIcon={<ExpandMore />}>
             {icon}
-            <span style={styles.capitalize}>
+            <styled.Title>
                 {changeDashForSpace(title)}
                 {title !== 'stats' &&
-                <small style={styles.miniInfo}> ({info && info.length}{
+                <styled.TitleQuant> ({info && info.length}{
                     title !== 'moves' &&
                         title !== 'stats' &&
                         title !== 'abilities' &&
                     ' methods'
-                })</small>}
-            </span>
-        </AccordionSummaryContainer>
+                })</styled.TitleQuant>}
+            </styled.Title>
+        </styled.AccordionSummaryContainer>
         <AccordionDetails>
-            <ul style={styles.ul}>
+            <styled.Ul>
                 {info && info.map((data, i) => {
                     switch(title){
                         case 'stats':
@@ -101,9 +72,9 @@ const AccordionInfo: React.FC<Props> = ({ startsExpanded = false,
 
 
                 })}
-            </ul>
+            </styled.Ul>
         </AccordionDetails>
-    </AccordionRoot>
+    </styled.AccordionRoot>
 }
 
 export default AccordionInfo;

@@ -1,37 +1,15 @@
 import React, {useEffect, useState} from "react";
 import {Pokemon} from "../../types/Pokemon";
-import {
-    Chip, Typography
-} from "@mui/material";
-import colors from "../atoms/colors";
+import {Typography} from "@mui/material";
 import {changeDashForSpace} from "../../services/pokemonGetter";
+import {styles} from "./StylesMolecules";
 
 
 type Props = {
     pokemon: Pokemon;
 }
 
-
-const styles = {
-    nameContainer: {
-        flex: 1,
-        paddingLeft: 8
-    },
-    species: {
-        fontWeight: 700,
-        lineHeight: 2,
-        textTransform: 'capitalize'
-    },
-    fixedSubName: {
-        fontWeight: 300,
-        lineHeight: 0.1,
-        position: 'relative',
-        marginBottom: 1.6,
-        display: 'block',
-        top: 0,
-        textTransform: 'capitalize'
-    },
-}
+const styled = styles.Naming;
 
 
 const Naming: React.FC<Props> = ({ pokemon }) => {
@@ -46,21 +24,17 @@ const Naming: React.FC<Props> = ({ pokemon }) => {
     }, []);
 
     return <>
-            <div style={styles.nameContainer}>
+            <styled.NameContainer>
 
-                <Typography variant={'h6'}
-                            sx={styles.species}
-                            color={"default"}
-                >
+                <styled.Species variant={'h6'} color={"default"}>
                     {pokemon?.species?.name}
-                </Typography>
+                </styled.Species>
 
                 {fixedSubName &&
-                    <Typography variant={'caption'}
-                                sx={styles.fixedSubName}>
+                    <styled.FixedSubName variant={'caption'}>
                         {fixedSubName}
-                    </Typography>}
-            </div>
+                    </styled.FixedSubName>}
+            </styled.NameContainer>
         </>
 }
 

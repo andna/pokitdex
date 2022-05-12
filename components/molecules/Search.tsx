@@ -1,115 +1,49 @@
 import React, {useState} from "react";
-import {Box, InputAdornment, TextField, Tooltip, useTheme} from "@mui/material";
-import {Search as SearchIcon, Close, Star, StarBorderOutlined} from "@mui/icons-material";
+import {Box, InputAdornment, TextField, useTheme} from "@mui/material";
+import {Search as SearchIcon, Close} from "@mui/icons-material";
 import { useSelector, useDispatch } from 'react-redux';
-
-const styles = {
-    endAdorment : {
-        color: 'inherit',
-        cursor: 'pointer'
-    },
-    input: {
-        flex: 1,
-        marginTop: 0.5,
-        marginRight: 2,
-        '& .MuiInputBase-root':{
-            color: 'white',
-        },
-        '& .MuiFormLabel-root':{
-            color: 'white',
-        },
-        '& .MuiInputBase-input':{
-            height: 15,
-        },
-        '& .MuiOutlinedInput-notchedOutline':{
-            borderColor: 'rgba(255,255,255,.5)',
-        },
-        '&:hover .MuiOutlinedInput-notchedOutline':{
-            borderColor: 'rgba(255,255,255,1)',
-        },
-        '& .MuiFormLabel-root:not(.Mui-focused):not(.MuiFormLabel-filled)':{
-           transform: 'translate(14px, 13px) scale(1)',
-        }
-        //.css-r0e94v-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline
-    },
-    box: {
-        maxWidth: '50vw',
-    },
-    container: {
-        display: 'flex',
-        alignItems: 'center',
-        width: '100%',
-    },
-    favoriter: {
-        cursor: 'pointer',
-        display: 'none' as 'none'
-    }
-}
+import {styles} from "./StylesMolecules";
 
 type Props = {
 }
+
+const styled = styles.Search;
+
 const Search: React.FC<Props> = ({  }) => {
-
-
     const searchTerm = useSelector((s: {searchT: string}) => s.searchT);
     const dispatch = useDispatch();
-
-    const theme = useTheme();
-
-    const [isFilteredByFavorites, setIsFilteredByFavorites] = useState<boolean>(false);
 
     const handleSearch = (value : string) => {
         dispatch({ type: "SET", payload: value })
     }
-
-
-
     return (
-        <Box
-            component="form"
-            sx={{
-                ...styles.box,
-            }}
-            noValidate
-            autoComplete="off"
-        >
-            <div style={styles.container}>
-                <TextField
+        <styled.Box component="form">
+            <styled.Container>
+                <styled.TextField
                     id="outlined-basic"
                     aria-label="Search Pokemon"
                     label="Search"
                     variant="outlined"
                     color="secondary"
-                    sx={styles.input}
                     value={searchTerm}
                     onChange={(event) => handleSearch(event.target.value)}
                     InputProps={{
                         endAdornment: (
-                            <InputAdornment position="end" sx={styles.endAdorment}>
+                            <styled.EndAdorment position="end">
                                 {searchTerm
                                     ?
                                     <Close onClick={() => handleSearch('')}/>
                                     :
                                     <SearchIcon/>
                                 }
-                            </InputAdornment>
+                            </styled.EndAdorment>
                         ),
                     }}
                 />
 
-                <div style={styles.favoriter} onClick={()=>setIsFilteredByFavorites(!isFilteredByFavorites)}>
-                    <Tooltip title={`${isFilteredByFavorites ? `Unfilter`: `Filter`} by Favorites`}>
-                        { isFilteredByFavorites ?
-                            <Star color="secondary"/>
-                            :
-                            <StarBorderOutlined />
-                        }
-                    </Tooltip>
-                </div>
+            </styled.Container>
 
-            </div>
-
-        </Box>
+        </styled.Box>
     )
 }
 
