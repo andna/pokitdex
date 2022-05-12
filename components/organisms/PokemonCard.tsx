@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { Pokemon, Type } from "../../types/Pokemon";
-import {Grid, Typography, Skeleton, Tooltip,
+import {
+    Grid, Typography, Skeleton, Tooltip, Card,
 } from "@mui/material";
 import {ChevronRight} from "@mui/icons-material";
 import Link from 'next/link'
@@ -22,6 +23,24 @@ type Props = {
 }
 
 
+const styles2 = {
+    card: {
+        width: 345,
+        marginBottom: 2,
+        overflow: 'unset',
+        position: 'relative' as 'relative'
+    },
+    pageCard: {
+        width: 800,
+        maxWidth: 'calc(100vw - 42px)',
+    },
+    clickeable: {
+        cursor: 'pointer !important',
+        "&:hover": {
+            filter: 'brightness(1.1)'
+        }
+    },
+}
 const styled = styles.PokemonCard;
 
 const PokemonCard: React.FC<Props> = ({ pokemonName,
@@ -44,8 +63,6 @@ const PokemonCard: React.FC<Props> = ({ pokemonName,
 
     const router = useRouter();
 
-    const StyledCard = styled.Card({isPage: isPage, isHovered: hoveringCard})
-
     return <>
         {!isCurrentlySearching && !isPage && pokemonInfo && (isFirstOfPage || getTitle(pokemonInfo.id, true)) &&
             <GenTitle title={(getTitle(pokemonInfo.id, true) || getTitle(pokemonInfo.id, false) )}/>
@@ -53,9 +70,7 @@ const PokemonCard: React.FC<Props> = ({ pokemonName,
         <Grid key={pokemonName} item>
 
             <Link href={isPage ? 'javascript:void(0)' : `/${pokemonName}`}>
-                <StyledCard
-                    onMouseEnter={() => setHoveringCard(true)}
-                    onMouseLeave={() => setHoveringCard(false)}>
+                <Card sx={{...styles2.card, ...(isPage ? styles2.pageCard: styles2.clickeable)}}>
                     {pokemonInfo ?
                             <>
                                 <styled.ExternalPadding>
@@ -118,7 +133,7 @@ const PokemonCard: React.FC<Props> = ({ pokemonName,
                         </styled.SkeletonContainer>
 
                     }
-                </StyledCard>
+                </Card>
             </Link>
         </Grid>
     </>

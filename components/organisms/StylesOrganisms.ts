@@ -33,21 +33,6 @@ export const styles = {
         `,
     },
     PokemonCard: {
-        Card: (options: {isPage: boolean, isHovered: boolean}) => styled(Card)`
-          width: 345px;
-          margin-bottom: 16px;
-          overflow: unset;
-          position: relative;
-          ${options.isHovered && !options.isPage &&
-            `cursor: pointer !important;
-            filter: brightness(1.1)`
-          }
-          ${options.isPage &&
-            `width: 800px;
-            max-width: calc(100vw - 42px);
-            `
-          }
-        `,
         GroupName: styled(Typography)`
           opacity: 0.5;
         `,
