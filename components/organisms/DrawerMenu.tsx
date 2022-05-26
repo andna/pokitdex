@@ -1,4 +1,4 @@
-import {Divider, Drawer, List, ListItem, ListItemIcon, ListItemText} from "@mui/material";
+import {Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, useTheme} from "@mui/material";
 import React, {useEffect, useState} from "react";
 import {
     Add,
@@ -46,6 +46,8 @@ const DrawerMenu:React.FC<Props> = ({ isDarkMode, toggleDarkMode, isPage, pokeNa
                 setState({ ...state, [anchor]: open });
             };
 
+    const theme = useTheme();
+    const listColor = {color: theme.palette.text.primary};
 
     const MenuButtons = [
         <Link href={'/'} key="button-home">
@@ -53,22 +55,22 @@ const DrawerMenu:React.FC<Props> = ({ isDarkMode, toggleDarkMode, isPage, pokeNa
                 <ListItemIcon>
                     <Home color="secondary"/>
                 </ListItemIcon>
-                <ListItemText primary="Home"/>
-            </ListItem>
+                <ListItemText sx={listColor} primary="Home"/>
+                        </ListItem>
         </Link>,
         <Divider  key="button-divider-1" />,
         <ListItem button onClick={()=> {toggleDarkMode()}} key="button-mode">
             <ListItemIcon color="secondary">
                 {isDarkMode ? <DarkMode  color="secondary"/> : <WbSunny  color="secondary"/>}
             </ListItemIcon>
-            <ListItemText primary={`Dark Mode ${isDarkMode ? 'Off' : 'On' }`} />
+            <ListItemText sx={listColor} primary={`Dark Mode ${isDarkMode ? 'Off' : 'On' }`} />
         </ListItem>,
         <Link href={'/add'} key="button-add">
             <ListItem button>
                 <ListItemIcon>
                     <Add color="secondary"/>
                 </ListItemIcon>
-                <ListItemText primary="Add Custom Poke" secondary="BETA"/>
+                <ListItemText sx={listColor} primary="Add Custom Poke" secondary="BETA"/>
             </ListItem>
         </Link>,
 
@@ -77,19 +79,19 @@ const DrawerMenu:React.FC<Props> = ({ isDarkMode, toggleDarkMode, isPage, pokeNa
             <ListItemIcon>
                 <CheckBoxOutlineBlank   color="secondary"/>
             </ListItemIcon>
-            <ListItemText primary="Favorites and Team" secondary="Soon"/>
+            <ListItemText sx={listColor} primary="Favorites and Team" secondary="Soon"/>
         </ListItem>,
         <ListItem disabled  key="button-types">
             <ListItemIcon>
                 <CheckBoxOutlineBlank  color="secondary"/>
             </ListItemIcon>
-            <ListItemText primary="Type Matchups" secondary="Soon"/>
+            <ListItemText sx={listColor} primary="Type Matchups" secondary="Soon"/>
         </ListItem>,
         <ListItem disabled  key="button-play">
             <ListItemIcon>
                 <CheckBoxOutlineBlank  color="secondary"/>
             </ListItemIcon>
-            <ListItemText primary="Play Who's that?!" secondary="Soon"/>
+            <ListItemText sx={listColor} primary="Play Who's that?!" secondary="Soon"/>
         </ListItem>,
     ];
 
